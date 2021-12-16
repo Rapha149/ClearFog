@@ -1,11 +1,12 @@
 package de.rapha149.fogremover.version;
 
 import io.netty.channel.ChannelPipeline;
-import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public interface VersionWrapper {
 
-    ChannelPipeline getPipeline(Player player);
+    List<ChannelPipeline> getServerPipelines() throws NoSuchFieldException, IllegalAccessException;
 
     Class<?> getPacketClass();
 
