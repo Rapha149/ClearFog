@@ -1,0 +1,11 @@
+name: FogRemover
+author: Rapha149
+version: 1.0
+main: de.rapha149.fogremover.FogRemover
+description: Disables fog by "telling" the client that the view distance is higher.
+website: https://github.com/Rapha149/FogRemover
+
+commands:
+  fogremoverreload:
+    description: Reloads the FogRemover config.
+    permission: fogremover.reload
