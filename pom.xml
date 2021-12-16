@@ -17,12 +17,10 @@
 
     <name>FogRemover</name>
 
-    <description>Disables the fog by "telling" the client that the server view distance is 32 chunks.</description>
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>https://github.com/Rapha149</url>
 
     <build>
         <plugins>
