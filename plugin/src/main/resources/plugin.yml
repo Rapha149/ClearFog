@@ -7,8 +7,17 @@ description: Disables fog by "telling" the client that the view distance is high
 website: https://github.com/Rapha149/FogRemover
 
 commands:
-  fogremoverreload:
-    description: Reloads the FogRemover config.
-    permission: fogremover.reload
-  setfog:
-    description: Sets the individual player fog/view distance.
+  fogremover:
+    description: Manage the FogRemover plugin.
+    permission: fogremover
+    aliases: [fog]
+
+permissions:
+  fogremover.reload:
+    description: Permission for '/fogremover reload'
+    children:
+      fogremover: true
+  fogremover.individual:
+    description: Permission for '/fogremover set'
+    children:
+      fogremover: true
