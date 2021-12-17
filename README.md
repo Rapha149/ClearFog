@@ -22,7 +22,7 @@ How that looks:
 
 ## URLs
 
-[Download](https://www.spigotmc.org/resources/clearfog.98448) (Spigot)
+[Download](https://www.spigotmc.org/resources/clearfog.98448) (Spigot)  
 [bStats](https://bstats.org/plugin/bukkit/ClearFog/13628)
 
 ## Config
