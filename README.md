@@ -5,6 +5,11 @@ Are you also unnerved by the new 1.18 fog system? And you tried to increase the 
 The server view distance won't change.  
 You can even change the default view distance or set individual view distances for different players!
 
+## URLs
+
+- [Spigot](https://www.spigotmc.org/resources/clearfog.98448)
+- [bStats](https://bstats.org/plugin/bukkit/ClearFog/13628)
+
 ## Why?
 
 As of 1.18 the fog in Minecraft is not done by the client anymore but by the server.
@@ -19,11 +24,6 @@ How that looks:
 ![2021-12-17_17 54 32](https://user-images.githubusercontent.com/49787110/146580689-1eab2fab-446b-4d83-a49d-2d79984fd01f.png)
 #### After
 ![2021-12-17_17 54 14](https://user-images.githubusercontent.com/49787110/146580691-a13337b8-a76a-4f0c-916d-bcd688c57a6a.png)
-
-## URLs
-
-[Download](https://www.spigotmc.org/resources/clearfog.98448) (Spigot)  
-[bStats](https://bstats.org/plugin/bukkit/ClearFog/13628)
 
 ## Config
 
@@ -76,6 +76,10 @@ Please also note that fog is only applied on join, so you have to rejoin for the
 - `clearfog.individual.toggle` - Permission for `/fog individual <enable|disable>`
 - `clearfog.individual.values` - Permission for `/fog individual get`, `/fog individual set` and `/fog individual unset`
 - `clearfog.individual.values.others` - Allows players to change the player specific view distances for other players.
+
+## Additional information
+
+This plugin collects anonymous server stats with [bStats](https://bstats.org), an open-source statistics service for Minecraft software. If you don't want this, you can deactivate it in `plugins/bStats/config.yml`.
 
 ## Credits
 
