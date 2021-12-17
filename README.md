@@ -83,4 +83,4 @@ This plugin collects anonymous server stats with [bStats](https://bstats.org), a
 
 ## Credits
 
-Credits go to [dmulloy2](https://github.com/dmulloy2) and aadnk for [TinyProtocol](https://github.com/dmulloy2/ProtocolLib/blob/master/TinyProtocol/src/main/java/com/comphenix/ticyprotocol/TinyProtocol.java) (a part of [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997)) from which I used some code. 
+Credits go to [dmulloy2](https://github.com/dmulloy2) and aadnk for [TinyProtocol](https://github.com/dmulloy2/ProtocolLib/blob/master/TinyProtocol/src/main/java/com/comphenix/tinyprotocol/TinyProtocol.java) (a part of [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997)) from which I used some code. 
