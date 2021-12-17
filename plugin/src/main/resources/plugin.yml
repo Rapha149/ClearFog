@@ -4,30 +4,56 @@ version: 1.0
 main: de.rapha149.fogremover.FogRemover
 api-version: 1.18
 description: Disables fog by "telling" the client that the view distance is higher.
-website: https://github.com/Rapha149/FogRemover
+website: https://github.com/Rapha149/fog
 
 commands:
-  fogremover:
+  fog:
     description: Manage the FogRemover plugin.
     permission: fogremover
-    aliases: [fog]
+    aliases: [myfog]
 
 permissions:
   fogremover.*:
     children:
       fogremover: true
   fogremover.reload:
-    description: Permission for '/fogremover reload'
+    description: Permission for '/fog reload'
     children:
       fogremover: true
+  fogremover.default:
+    description: Permission for '/fog default'
+    children:
+      fogremover: true
+  fogremover.default.*:
+    children:
+      fogremover.default: true
+  fogremover.default.toggle:
+    description: Permission for '/fog default <enable|disable>'
+    children:
+      fogremover.default: true
+  fogremover.default.values:
+    description: Permission for '/fog default <get|set>'
+    children:
+      fogremover.default: true
   fogremover.individual:
-    description: Permission for '/fogremover set' and '/fogremover unset'
+    description: Permission for '/fog individual'
     children:
       fogremover: true
   fogremover.individual.*:
     children:
       fogremover.individual: true
-  fogremover.individual.others:
-    description: Permission to set the individual view distance for other people.
+  fogremover.individual.toggle:
+    description: Permission for '/fog individual <enable|disable>'
     children:
       fogremover.individual: true
+  fogremover.individual.values:
+    description: Permission for '/fog individual <get|set|unset'
+    children:
+      fogremover.individual: true
+  fogremover.individual.values.*:
+    children:
+      fogremover.individual.values: true
+  fogremover.individual.values.others:
+    description: Permission to get/set/unset the individual view distance for other people.
+    children:
+      fogremover.individual.values: true
