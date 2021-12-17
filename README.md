@@ -29,6 +29,7 @@ How that looks:
 
 The default `config.yml` looks like this:
 ```yml
+check-for-updates: true
 default:
   enabled: true
   view-distance: 32
@@ -39,6 +40,7 @@ distances:
 You can change all values using commands, but you can edit the config, too.  
 Here's what the values do:
 
+- `check-for-updates` - Whether to check for plugin updates on startup.
 - `default`
   - `enabled` - Changes whether the default view distance is applied.  
   - `view-distance` - The default view distance.  
