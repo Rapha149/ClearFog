@@ -13,7 +13,12 @@ If you can't increase it for some reason or you don't want to in order to save p
 
 ## How this plugin works
 
-The plugin modifies the login packet that is sent to the client when the client joins and changes the view distance.
+The plugin modifies the login packet that is sent to the client when the client joins and changes the view distance.  
+How that looks:  
+#### Before
+![2021-12-17_17 54 32](https://user-images.githubusercontent.com/49787110/146580689-1eab2fab-446b-4d83-a49d-2d79984fd01f.png)
+#### After
+![2021-12-17_17 54 14](https://user-images.githubusercontent.com/49787110/146580691-a13337b8-a76a-4f0c-916d-bcd688c57a6a.png)
 
 ## Config
 
@@ -54,7 +59,7 @@ Sub commands are:
 - `/fog individual unset [Player]` - Removes the player specific view distance for yourself or another player.
 
 You can also use the alias `/myfog` for all `/fog individual` commmands.  
-For example: You can use `/myfog set 16` to change your view distance to 16.
+For example: You can use `/myfog set 16` instead of `/fog individual set 16`.
 
 Please also note that fog is only applied on join, so you have to rejoin for the changes to take effect.
 
