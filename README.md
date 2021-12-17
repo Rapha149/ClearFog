@@ -1,9 +1,14 @@
 # ClearFog
 
-Are you also unnerved by the new 1.18 fog system? Did you try to increase the server view distance?  
+Are you also unnerved by the new 1.18 fog system? And you tried to increase the server view distance?  
 **You don't have to!** This Spigot plugin "tells" the player that the view distance is higher than it actually is.
 The server view distance won't change.  
 You can even change the default view distance or set individual view distances for different players!
+
+## URLs
+
+- [Spigot](https://www.spigotmc.org/resources/clearfog.98448)
+- [bStats](https://bstats.org/plugin/bukkit/ClearFog/13628)
 
 ## Why?
 
@@ -27,7 +32,7 @@ The default `config.yml` looks like this:
 default:
   enabled: true
   view-distance: 32
-individual-distances:
+distances:
   enabled: false
   players: {}
 ```
@@ -37,7 +42,7 @@ Here's what the values do:
 - `default`
   - `enabled` - Changes whether the default view distance is applied.  
   - `view-distance` - The default view distance.  
-- `individual-distances`  
+- `distances`  
   - `enabled` - Changes whether player specific view distances are applied.
   - `players` - Here are player specific view distances saved.
 
@@ -68,10 +73,14 @@ Please also note that fog is only applied on join, so you have to rejoin for the
 - `clearfog.reload` - Permission for `/fog reload`
 - `clearfog.default.toggle` - Permission for `/fog default <enable|disable>`
 - `clearfog.default.values` - Permission for `/fog default get` and `/fog default set`
-- `clearfog.individual.toggle` - Permission for `/fog individual <enable|disable`
+- `clearfog.individual.toggle` - Permission for `/fog individual <enable|disable>`
 - `clearfog.individual.values` - Permission for `/fog individual get`, `/fog individual set` and `/fog individual unset`
 - `clearfog.individual.values.others` - Allows players to change the player specific view distances for other players.
 
+## Additional information
+
+This plugin collects anonymous server stats with [bStats](https://bstats.org), an open-source statistics service for Minecraft software. If you don't want this, you can deactivate it in `plugins/bStats/config.yml`.
+
 ## Credits
 
-Credits go to comphenix / [dmulloy2](https://github.com/dmulloy2) because I used some code from [TinyProtocol](https://github.com/dmulloy2/ProtocolLib/blob/master/TinyProtocol/src/main/java/com/comphenix/ticyprotocol/TinyProtocol.java).
+Credits go to [dmulloy2](https://github.com/dmulloy2) and aadnk for [TinyProtocol](https://github.com/dmulloy2/ProtocolLib/blob/master/TinyProtocol/src/main/java/com/comphenix/ticyprotocol/TinyProtocol.java) (a part of [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997)) from which I used some code. 
