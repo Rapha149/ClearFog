@@ -67,17 +67,9 @@ public final class FogRemover extends JavaPlugin {
         messageConfig.addDefault("unset.self.success", "%prefix%&7Your individual view distance was removed.");
         messageConfig.addDefault("unset.others.does_not_exist", "%prefix%&5%player% &cdoes not have an individual view distance.");
         messageConfig.addDefault("unset.others.success", "%prefix%&7The individual view distance of &5%player% &7was removed.");
-        reloadMessages();
 
-        config = getConfig();
-        config.addDefault("enabled", true);
-        config.addDefault("view-distance", 32);
-        config.addDefault("individual-distances.enabled", false);
-        if (!config.isConfigurationSection("individual-distances.players"))
-            config.createSection("individual-distances.players");
-        config.options().copyDefaults(true);
-        saveConfig();
-        checkViewDistances();
+        loadMessages();
+        loadConfig();
 
         try {
             registerHandler();
@@ -101,7 +93,19 @@ public final class FogRemover extends JavaPlugin {
         getLogger().info(getMessage("plugin.disable"));
     }
 
-    private void reloadMessages() {
+    private void loadConfig() {
+        config = getConfig();
+        config.addDefault("enabled", true);
+        config.addDefault("view-distance", 32);
+        config.addDefault("individual-distances.enabled", false);
+        if (!config.isConfigurationSection("individual-distances.players"))
+            config.createSection("individual-distances.players");
+        config.options().copyDefaults(true);
+        saveConfig();
+        checkViewDistances();
+    }
+
+    private void loadMessages() {
         try {
             if (messageFile.exists())
                 messageConfig.load(messageFile);
@@ -138,9 +142,12 @@ public final class FogRemover extends JavaPlugin {
                     break;
                 }
 
-                reloadMessages();
+                loadMessages();
                 reloadConfig();
+                loadConfig();
                 config = getConfig();
+                config.options().copyDefaults(true);
+                saveConfig();
                 checkViewDistances();
                 try {
                     unregisterHandler();
