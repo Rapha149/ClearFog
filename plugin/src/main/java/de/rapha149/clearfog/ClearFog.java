@@ -1,5 +1,7 @@
 package de.rapha149.clearfog;
 
+import de.rapha149.clearfog.Metrics.SimplePie;
+import de.rapha149.clearfog.Metrics.SingleLineChart;
 import de.rapha149.clearfog.version.VersionWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,6 +28,11 @@ public final class ClearFog extends JavaPlugin {
 
         loadMessages();
         loadConfig();
+
+        Metrics metrics = new Metrics(this, 13628);
+        metrics.addCustomChart(new SingleLineChart("default_view_distance_enabled", () -> config.getBoolean("default.enabled") ? 1 : 0));
+        metrics.addCustomChart(new SingleLineChart("player_specific_view_distance_enabled", () -> config.getBoolean("individual.enabled") ? 1 : 0));
+        metrics.addCustomChart(new SimplePie("default_view_distance", () -> String.valueOf(config.getInt("default.view-distance"))));
 
         try {
             Util.registerHandler();
