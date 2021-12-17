@@ -1,6 +1,6 @@
 # ClearFog
 
-Are you also unnerved by the new 1.18 fog system? Did you try to increase the server view distance?  
+Are you also unnerved by the new 1.18 fog system? And you tried to increase the server view distance?  
 **You don't have to!** This Spigot plugin "tells" the player that the view distance is higher than it actually is.
 The server view distance won't change.  
 You can even change the default view distance or set individual view distances for different players!
