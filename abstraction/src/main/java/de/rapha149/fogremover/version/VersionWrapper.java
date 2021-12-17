@@ -9,11 +9,11 @@ public interface VersionWrapper {
 
     List<ChannelPipeline> getServerPipelines() throws NoSuchFieldException, IllegalAccessException;
 
-    Class<?> getLoginPacketClass();
+    Class<?> getLoginSuccessPacketClass();
 
-    Class<?> getLoginStartPacketClass();
+    Class<?> getLoginPlayPacketClass();
+
+    UUID getUUIDFromLoginPacket(Object obj);
 
     Object replaceViewDistance(Object obj, int viewDistance);
-
-    UUID getUUID(Object obj);
 }
