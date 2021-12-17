@@ -6,14 +6,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.UUID;
 
-import static de.rapha149.clearfog.Messages.getMessage;
-
 public class Util {
 
     private static final String HANDLER_NAME = "ClearFog";
     public static FileConfiguration config;
     public static VersionWrapper WRAPPER;
-    
+
     public static int checkViewDistance(int distance) {
         return Math.max(2, Math.min(32, distance));
     }
@@ -22,13 +20,14 @@ public class Util {
         if (config.getBoolean("default.enabled")) {
             int viewDistance = config.getInt("default.view-distance");
             if (viewDistance < 2 || viewDistance > 32)
-                ClearFog.getInstance().getLogger().warning(getMessage("plugin.invalid_distance"));
+                ClearFog.getInstance().getLogger().warning("The view distance set in the config is invalid. It has to be between 2 and 32.");
         }
         if (config.getBoolean("individual.enabled")) {
             config.getConfigurationSection("individual.players").getKeys(false).forEach(uuid -> {
                 int viewDistance = config.getInt("individual.players." + uuid);
                 if (viewDistance < 2 || viewDistance > 32)
-                    ClearFog.getInstance().getLogger().warning(getMessage("plugin.invalid_individual_distance").replace("%player%", uuid));
+                    ClearFog.getInstance().getLogger().warning("The individual view distance for " + uuid +
+                                                               " set in the config is invalid. It has to be between 2 and 32.");
             });
         }
     }

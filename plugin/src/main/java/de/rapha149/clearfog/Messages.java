@@ -20,9 +20,6 @@ public class Messages {
         messageConfig.addDefault("prefix", "&8[&4ClearFog&8] ");
         messageConfig.addDefault("plugin.enable", "Plugin successfully enabled.");
         messageConfig.addDefault("plugin.disable", "Plugin disabled.");
-        messageConfig.addDefault("plugin.invalid_distance", "The view distance set in the config is invalid. It has to be between 2 and 32.");
-        messageConfig.addDefault("plugin.invalid_individual_distance", "The individual view distance for %player% " +
-                                                                       "set in the config is invalid. It has to be between 2 and 32.");
         messageConfig.addDefault("syntax", "%prefix%&cSyntax error! Please use &7/%syntax%&c.");
         messageConfig.addDefault("error", "%prefix%&cAn error occured. Check the console for details.");
         messageConfig.addDefault("no_permission", "%prefix%&cYou do not have enough permissions to perform this action.");
