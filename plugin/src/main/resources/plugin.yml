@@ -13,11 +13,21 @@ commands:
     aliases: [fog]
 
 permissions:
+  fogremover.*:
+    children:
+      fogremover: true
   fogremover.reload:
     description: Permission for '/fogremover reload'
     children:
       fogremover: true
   fogremover.individual:
-    description: Permission for '/fogremover set'
+    description: Permission for '/fogremover set' and '/fogremover unset'
     children:
       fogremover: true
+  fogremover.individual.*:
+    children:
+      fogremover.individual: true
+  fogremover.individual.others:
+    description: Permission to set the individual view distance for other people.
+    children:
+      fogremover.individual: true
