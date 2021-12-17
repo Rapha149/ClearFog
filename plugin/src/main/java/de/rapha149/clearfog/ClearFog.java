@@ -17,13 +17,13 @@ public final class ClearFog extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].substring(1);
+        String nmsVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].substring(1);
         try {
-            WRAPPER = (VersionWrapper) Class.forName(VersionWrapper.class.getPackage().getName() + ".Wrapper" + version).newInstance();
+            WRAPPER = (VersionWrapper) Class.forName(VersionWrapper.class.getPackage().getName() + ".Wrapper" + nmsVersion).newInstance();
         } catch (IllegalAccessException | InstantiationException exception) {
-            throw new IllegalStateException("Failed to load support for server version " + version, exception);
+            throw new IllegalStateException("Failed to load support for server version " + nmsVersion, exception);
         } catch (ClassNotFoundException exception) {
-            throw new IllegalStateException("ClearFog does not support the server version \"" + version + "\"", exception);
+            throw new IllegalStateException("ClearFog does not support the server version \"" + nmsVersion + "\"", exception);
         }
 
         loadMessages();
@@ -33,6 +33,18 @@ public final class ClearFog extends JavaPlugin {
         metrics.addCustomChart(new SingleLineChart("default_view_distance_enabled", () -> config.getBoolean("default.enabled") ? 1 : 0));
         metrics.addCustomChart(new SingleLineChart("player_specific_view_distance_enabled", () -> config.getBoolean("individual.enabled") ? 1 : 0));
         metrics.addCustomChart(new SimplePie("default_view_distance", () -> String.valueOf(config.getInt("default.view-distance"))));
+
+        if(config.getBoolean("check-for-updates")) {
+            String version = Updates.getAvailableVersion(true);
+            if (version == null)
+                getLogger().info(getMessage("plugin.up_to_date"));
+            else {
+                for (String line : getMessage("plugin.outdated").replace("%version%", version)
+                        .replace("%url%", Updates.SPIGOT_URL).split("\n")) {
+                    getLogger().warning(line);
+                }
+            }
+        }
 
         try {
             Util.registerHandler();
@@ -62,6 +74,7 @@ public final class ClearFog extends JavaPlugin {
 
     void loadConfig() {
         config = getConfig();
+        config.addDefault("check-for-updates", true);
         config.addDefault("default.enabled", true);
         config.addDefault("default.view-distance", 32);
         config.addDefault("individual.enabled", false);

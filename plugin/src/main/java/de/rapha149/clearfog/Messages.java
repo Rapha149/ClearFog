@@ -20,6 +20,9 @@ public class Messages {
         messageConfig.addDefault("prefix", "&8[&4ClearFog&8] ");
         messageConfig.addDefault("plugin.enable", "Plugin successfully enabled.");
         messageConfig.addDefault("plugin.disable", "Plugin disabled.");
+        messageConfig.addDefault("plugin.up_to_date", "Your server of this plugin is up to date!");
+        messageConfig.addDefault("plugin.outdated", "There's a new version available for this plugin: %version%" +
+                                                          "\nYou can download it from: %url%");
         messageConfig.addDefault("syntax", "%prefix%&cSyntax error! Please use &7/%syntax%&c.");
         messageConfig.addDefault("error", "%prefix%&cAn error occured. Check the console for details.");
         messageConfig.addDefault("no_permission", "%prefix%&cYou do not have enough permissions to perform this action.");
