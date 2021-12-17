@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.UUID;
+
 public final class FogRemover extends JavaPlugin {
 
     private static final int DEFAULT_VIEW_DISTANCE = 32;
@@ -43,9 +45,7 @@ public final class FogRemover extends JavaPlugin {
             return;
         }
 
-        getCommand("fogremoverreload").setExecutor(this);
-        getCommand("setfog").setPermission(config.getString("individual-distances.permission"));
-        getCommand("setfog").setExecutor(this);
+        getCommand("fog").setExecutor(this);
         getLogger().info("Plugin loaded successfully.");
     }
 
@@ -90,12 +90,32 @@ public final class FogRemover extends JavaPlugin {
                     if (!pipeline.names().contains(HANDLER_NAME)) {
                         getLogger().info("Test 3");
                         pipeline.addAfter("packet_handler", HANDLER_NAME, new ChannelDuplexHandler() {
+
+                            private UUID player;
+
+                            @Override
+                            public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+                                try {
+                                    if(msg.getClass() == WRAPPER.getLoginStartPacketClass())
+                                        player = WRAPPER.getUUID(msg);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                super.channelRead(ctx, msg);
+                            }
+
                             @Override
                             public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
                                 try {
-                                    if (msg.getClass() == WRAPPER.getPacketClass()) {
+                                    if (msg.getClass() == WRAPPER.getLoginPacketClass()) {
                                         getLogger().info("Test 5");
-                                        msg = WRAPPER.replaceViewDistance(msg, getConfig().getInt("view-distance"));
+
+                                        int viewDistance = getConfig().getInt("view-distance");
+                                        if(player != null && getConfig().getBoolean("individual-distances.enabled") &&
+                                           getConfig().isSet("individual-distances.players." + player)) {
+                                            viewDistance = getConfig().getInt("individual-distances.players." + player);
+                                        }
+                                        msg = WRAPPER.replaceViewDistance(msg, viewDistance);
                                         pipeline.remove(HANDLER_NAME);
                                     }
                                 } catch (Exception e) {
