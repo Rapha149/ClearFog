@@ -51,6 +51,11 @@ Sub commands are:
 - `/fog individual set <View Distance> [Player]` - Sets the player specific view distance for yourself or another player.
 - `/fog individual unset [Player]` - Removes the player specific view distance for yourself or another player.
 
+You can also use the alias `/myfog` for all `/fog individual` commmands.  
+For example: You can use `/myfog set 16` to change your view distance to 16.
+
+Please also note that fog is only applied on join, so you have to rejoin for the changes to take effect.
+
 ## Permissions
 
 - `fogremover.reload` - Permission for `/fog reload`
