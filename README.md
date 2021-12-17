@@ -20,6 +20,11 @@ How that looks:
 #### After
 ![2021-12-17_17 54 14](https://user-images.githubusercontent.com/49787110/146580691-a13337b8-a76a-4f0c-916d-bcd688c57a6a.png)
 
+## URLs
+
+[Download](https://www.spigotmc.org/resources/clearfog.98448) (Spigot)
+[bStats](https://bstats.org/plugin/bukkit/ClearFog/13628)
+
 ## Config
 
 The default `config.yml` looks like this:
