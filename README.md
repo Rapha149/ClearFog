@@ -27,7 +27,7 @@ The default `config.yml` looks like this:
 default:
   enabled: true
   view-distance: 32
-individual-distances:
+distances:
   enabled: false
   players: {}
 ```
@@ -37,7 +37,7 @@ Here's what the values do:
 - `default`
   - `enabled` - Changes whether the default view distance is applied.  
   - `view-distance` - The default view distance.  
-- `individual-distances`  
+- `distances`  
   - `enabled` - Changes whether player specific view distances are applied.
   - `players` - Here are player specific view distances saved.
 
