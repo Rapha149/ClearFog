@@ -10,7 +10,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class FogRemover extends JavaPlugin {
 
-    private final String HANDLER_NAME = "FogRemover";
+    private static final int DEFAULT_VIEW_DISTANCE = 32;
+    private static final String HANDLER_NAME = "FogRemover";
     private VersionWrapper WRAPPER;
 
     @Override
@@ -25,12 +26,17 @@ public final class FogRemover extends JavaPlugin {
         }
 
         FileConfiguration config = getConfig();
-        config.addDefault("view-distance", 32);
+        config.addDefault("enabled", true);
+        config.addDefault("view-distance", DEFAULT_VIEW_DISTANCE);
+        config.addDefault("individual-distances.enabled", false);
+        config.addDefault("individual-distances.permission", null);
+        config.createSection("individual-distances.players");
         config.options().copyDefaults(true);
         saveConfig();
 
         try {
-            registerServerChannelHandler();
+            if (config.getBoolean("enabled"))
+                registerHandler();
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
             getServer().getPluginManager().disablePlugin(this);
@@ -38,31 +44,66 @@ public final class FogRemover extends JavaPlugin {
         }
 
         getCommand("fogremoverreload").setExecutor(this);
+        getCommand("setfog").setPermission(config.getString("individual-distances.permission"));
+        getCommand("setfog").setExecutor(this);
         getLogger().info("Plugin loaded successfully.");
     }
 
-    private void registerServerChannelHandler() throws NoSuchFieldException, IllegalAccessException {
-        ChannelHandler packetHandler = new ChannelDuplexHandler() {
-            @Override
-            public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+    @Override
+    public void onDisable() {
+        try {
+            unregisterHandler();
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        getLogger().info("Plugin disabled.");
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String alias, String[] args) {
+        switch (command.getName()) {
+            case "fogremoverreload":
+                reloadConfig();
                 try {
-                    if (msg.getClass() == WRAPPER.getPacketClass()) {
-                        msg = WRAPPER.replaceViewDistance(msg, getConfig().getInt("view-distance"));
-                        ctx.pipeline().remove(HANDLER_NAME);
-                    }
-                } catch (Exception e) {
+                    unregisterHandler();
+                    if (getConfig().getBoolean("enabled"))
+                        registerHandler();
+                    sender.sendMessage("§7Config was reloaded.");
+                } catch (NoSuchFieldException | IllegalAccessException e) {
                     e.printStackTrace();
+                    sender.sendMessage("§cAn error occured whilst re-registering handlers.");
                 }
-                super.write(ctx, msg, promise);
-            }
-        };
+                break;
+            case "setfog":
+
+        }
+        return true;
+    }
+
+    private void registerHandler() throws NoSuchFieldException, IllegalAccessException {
         ChannelHandler packetInit = new ChannelInitializer<>() {
             @Override
             protected void initChannel(Channel channel) {
                 channel.eventLoop().submit(() -> {
                     ChannelPipeline pipeline = channel.pipeline();
+                    getLogger().info("Test 2");
                     if (!pipeline.names().contains(HANDLER_NAME)) {
-                        pipeline.addLast(HANDLER_NAME, packetHandler);
+                        getLogger().info("Test 3");
+                        pipeline.addAfter("packet_handler", HANDLER_NAME, new ChannelDuplexHandler() {
+                            @Override
+                            public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+                                try {
+                                    if (msg.getClass() == WRAPPER.getPacketClass()) {
+                                        getLogger().info("Test 5");
+                                        msg = WRAPPER.replaceViewDistance(msg, getConfig().getInt("view-distance"));
+                                        pipeline.remove(HANDLER_NAME);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                super.write(ctx, msg, promise);
+                            }
+                        });
                     }
                 });
             }
@@ -70,28 +111,30 @@ public final class FogRemover extends JavaPlugin {
         ChannelHandler init = new ChannelInitializer<>() {
             @Override
             protected void initChannel(Channel channel) {
+                getLogger().info("Test 1");
                 channel.pipeline().addLast(packetInit);
             }
         };
         ChannelHandler handler = new ChannelInboundHandlerAdapter() {
             @Override
             public void channelRead(ChannelHandlerContext ctx, Object msg) {
+                getLogger().info("Test 0");
                 ((Channel) msg).pipeline().addFirst(init);
                 ctx.fireChannelRead(msg);
             }
         };
-        WRAPPER.getServerPipelines().forEach(pipeline -> pipeline.addFirst(handler));
+        WRAPPER.getServerPipelines().forEach(pipeline -> {
+            if (pipeline.names().contains(HANDLER_NAME))
+                pipeline.remove(HANDLER_NAME);
+            pipeline.addFirst(HANDLER_NAME, handler);
+        });
     }
 
-    @Override
-    public void onDisable() {
-        getLogger().info("Plugin disabled.");
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String alias, String[] args) {
-        reloadConfig();
-        sender.sendMessage("§7Config was reloaded.");
-        return true;
+    private void unregisterHandler() throws NoSuchFieldException, IllegalAccessException {
+        if (WRAPPER != null)
+            WRAPPER.getServerPipelines().forEach(pipeline -> {
+                if (pipeline.names().contains(HANDLER_NAME))
+                    pipeline.remove(HANDLER_NAME);
+            });
     }
 }

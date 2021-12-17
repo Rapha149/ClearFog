@@ -10,3 +10,5 @@ commands:
   fogremoverreload:
     description: Reloads the FogRemover config.
     permission: fogremover.reload
+  setfog:
+    description: Sets the individual player fog/view distance.
