@@ -74,4 +74,4 @@ Please also note that fog is only applied on join, so you have to rejoin for the
 
 ## Credits
 
-Credits go to `comphenix` / [dmulloy2](https://github.com/dmulloy2) for [TinyProtocol](https://github.com/dmulloy2/ProtocolLib/blob/master/TinyProtocol/src/main/java/com/comphenix/ticyprotocol/TinyProtocol.java) which I used some code from.
+Credits go to [dmulloy2](https://github.com/dmulloy2) and aadnk for [TinyProtocol](https://github.com/dmulloy2/ProtocolLib/blob/master/TinyProtocol/src/main/java/com/comphenix/ticyprotocol/TinyProtocol.java) (a part of [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997)) from which I used some code. 
