@@ -1,4 +1,4 @@
-package de.rapha149.fogremover;
+package de.rapha149.clearfog;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
@@ -10,23 +10,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static de.rapha149.fogremover.Messages.getMessage;
-import static de.rapha149.fogremover.Messages.loadMessages;
-import static de.rapha149.fogremover.Util.*;
+import static de.rapha149.clearfog.Messages.getMessage;
+import static de.rapha149.clearfog.Messages.loadMessages;
+import static de.rapha149.clearfog.Util.*;
 
 public class FogCommand implements CommandExecutor, TabCompleter {
 
-    private FogRemover plugin;
+    private ClearFog plugin;
 
     public FogCommand(PluginCommand command) {
-        plugin = FogRemover.getInstance();
+        plugin = ClearFog.getInstance();
         command.setExecutor(this);
         command.setTabCompleter(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String alias, String[] args) {
-        if (!sender.hasPermission("fogremover")) {
+        if (!sender.hasPermission("clearfog")) {
             sender.sendMessage(getMessage("no_permission"));
             return true;
         }
@@ -40,7 +40,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
 
         switch (args[0].toLowerCase()) {
             case "reload":
-                if (!sender.hasPermission("fogremover.reload")) {
+                if (!sender.hasPermission("clearfog.reload")) {
                     sender.sendMessage(getMessage("no_permission"));
                     break;
                 }
@@ -61,7 +61,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                 }
                 break;
             case "default": {
-                if (!sender.hasPermission("fogremover.default")) {
+                if (!sender.hasPermission("clearfog.default")) {
                     sender.sendMessage(getMessage("no_permission"));
                     break;
                 }
@@ -76,7 +76,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                 switch (arg) {
                     case "enable":
                     case "disable":
-                        if (!sender.hasPermission("fogremover.default.toggle")) {
+                        if (!sender.hasPermission("clearfog.default.toggle")) {
                             sender.sendMessage(getMessage("no_permission"));
                             break;
                         }
@@ -94,7 +94,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                         break;
                     case "get":
                     case "set":
-                        if (!sender.hasPermission("fogremover.default.values")) {
+                        if (!sender.hasPermission("clearfog.default.values")) {
                             sender.sendMessage(getMessage("no_permission"));
                             break;
                         }
@@ -137,7 +137,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                 break;
             }
             case "individual":
-                if (!sender.hasPermission("fogremover.individual")) {
+                if (!sender.hasPermission("clearfog.individual")) {
                     sender.sendMessage(getMessage("no_permission"));
                     break;
                 }
@@ -153,7 +153,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                 switch (arg) {
                     case "enable":
                     case "disable": {
-                        if (!sender.hasPermission("fogremover.individual.toggle")) {
+                        if (!sender.hasPermission("clearfog.individual.toggle")) {
                             sender.sendMessage(getMessage("no_permission"));
                             break;
                         }
@@ -178,13 +178,13 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                             break;
                         }
 
-                        if (!sender.hasPermission("fogremover.individual.values")) {
+                        if (!sender.hasPermission("clearfog.individual.values")) {
                             sender.sendMessage(getMessage("no_permission"));
                             break;
                         }
 
                         boolean set = arg.equals("set");
-                        boolean permOthers = sender.hasPermission("fogremover.individual.values.others");
+                        boolean permOthers = sender.hasPermission("clearfog.individual.values.others");
                         boolean self;
                         OfflinePlayer target;
                         if (args.length >= (set ? 4 : 3) && permOthers) {
@@ -265,34 +265,34 @@ public class FogCommand implements CommandExecutor, TabCompleter {
 
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
-            if (sender.hasPermission("fogremover.reload"))
+            if (sender.hasPermission("clearfog.reload"))
                 list.add("reload");
-            if (sender.hasPermission("fogremover.default"))
+            if (sender.hasPermission("clearfog.default"))
                 list.add("default");
-            if (sender.hasPermission("fogremover.individual"))
+            if (sender.hasPermission("clearfog.individual"))
                 list.add("individual");
         }
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("default")) {
-                if (sender.hasPermission("fogremover.default.toggle"))
+                if (sender.hasPermission("clearfog.default.toggle"))
                     list.addAll(Arrays.asList("enable", "disable"));
-                if (sender.hasPermission("fogremover.default.values"))
+                if (sender.hasPermission("clearfog.default.values"))
                     list.addAll(Arrays.asList("get", "set"));
             }
             if (args[0].equalsIgnoreCase("individual")) {
-                if (sender.hasPermission("fogremover.individual.toggle"))
+                if (sender.hasPermission("clearfog.individual.toggle"))
                     list.addAll(Arrays.asList("enable", "disable"));
-                if (sender.hasPermission("fogremover.individual.values"))
+                if (sender.hasPermission("clearfog.individual.values"))
                     list.addAll(Arrays.asList("get", "set", "unset"));
             }
         }
         if (args.length == 3 && args[1].equalsIgnoreCase("set") &&
-            ((args[0].equalsIgnoreCase("default") && sender.hasPermission("fogremover.default")) ||
-             (args[0].equalsIgnoreCase("individual") && sender.hasPermission("fogremover.individual")))) {
+            ((args[0].equalsIgnoreCase("default") && sender.hasPermission("clearfog.default")) ||
+             (args[0].equalsIgnoreCase("individual") && sender.hasPermission("clearfog.individual")))) {
             for (int i = 2; i <= 32; i++)
                 list.add(String.valueOf(i));
         }
-        if (args[0].equalsIgnoreCase("individual") && sender.hasPermission("fogremover.individual.values.others") &&
+        if (args[0].equalsIgnoreCase("individual") && sender.hasPermission("clearfog.individual.values.others") &&
             args.length == (args[1].equalsIgnoreCase("set") ? 4 : 3)) {
             Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).forEach(list::add);
         }

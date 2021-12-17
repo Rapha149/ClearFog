@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>FogRemover-parent</artifactId>
-        <groupId>de.rapha149.fogremover</groupId>
+        <artifactId>ClearFog-parent</artifactId>
+        <groupId>de.rapha149.clearfog</groupId>
         <version>1.0</version>
     </parent>
 
-    <artifactId>FogRemover-abstraction</artifactId>
+    <artifactId>ClearFog-abstraction</artifactId>
 
     <dependencies>
         <dependency>

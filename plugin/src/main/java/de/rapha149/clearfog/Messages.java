@@ -1,4 +1,4 @@
-package de.rapha149.fogremover;
+package de.rapha149.clearfog;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -14,9 +14,9 @@ public class Messages {
     private static FileConfiguration messageConfig;
 
     static {
-        messageFile = new File(FogRemover.getInstance().getDataFolder(), "messages.yml");
+        messageFile = new File(ClearFog.getInstance().getDataFolder(), "messages.yml");
         messageConfig = new YamlConfiguration();
-        messageConfig.addDefault("prefix", "&8[&4FogRemover&8] ");
+        messageConfig.addDefault("prefix", "&8[&4ClearFog&8] ");
         messageConfig.addDefault("plugin.enable", "Plugin successfully enabled.");
         messageConfig.addDefault("plugin.disable", "Plugin disabled.");
         messageConfig.addDefault("plugin.invalid_distance", "The view distance set in the config is invalid. It has to be between 2 and 32.");
@@ -65,7 +65,7 @@ public class Messages {
             messageConfig.save(messageFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
-            FogRemover.getInstance().getLogger().severe("Failed to load message config.");
+            ClearFog.getInstance().getLogger().severe("Failed to load message config.");
             messageConfig.options().copyDefaults(true);
         }
     }

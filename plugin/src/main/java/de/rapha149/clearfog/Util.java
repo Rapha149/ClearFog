@@ -1,16 +1,16 @@
-package de.rapha149.fogremover;
+package de.rapha149.clearfog;
 
-import de.rapha149.fogremover.version.VersionWrapper;
+import de.rapha149.clearfog.version.VersionWrapper;
 import io.netty.channel.*;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.UUID;
 
-import static de.rapha149.fogremover.Messages.getMessage;
+import static de.rapha149.clearfog.Messages.getMessage;
 
 public class Util {
 
-    private static final String HANDLER_NAME = "FogRemover";
+    private static final String HANDLER_NAME = "ClearFog";
     public static FileConfiguration config;
     public static VersionWrapper WRAPPER;
     
@@ -22,13 +22,13 @@ public class Util {
         if (config.getBoolean("default.enabled")) {
             int viewDistance = config.getInt("default.view-distance");
             if (viewDistance < 2 || viewDistance > 32)
-                FogRemover.getInstance().getLogger().warning(getMessage("plugin.invalid_distance"));
+                ClearFog.getInstance().getLogger().warning(getMessage("plugin.invalid_distance"));
         }
         if (config.getBoolean("individual.enabled")) {
             config.getConfigurationSection("individual.players").getKeys(false).forEach(uuid -> {
                 int viewDistance = config.getInt("individual.players." + uuid);
                 if (viewDistance < 2 || viewDistance > 32)
-                    FogRemover.getInstance().getLogger().warning(getMessage("plugin.invalid_individual_distance").replace("%player%", uuid));
+                    ClearFog.getInstance().getLogger().warning(getMessage("plugin.invalid_individual_distance").replace("%player%", uuid));
             });
         }
     }

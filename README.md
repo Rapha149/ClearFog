@@ -65,12 +65,12 @@ Please also note that fog is only applied on join, so you have to rejoin for the
 
 ## Permissions
 
-- `fogremover.reload` - Permission for `/fog reload`
-- `fogremover.default.toggle` - Permission for `/fog default <enable|disable>`
-- `fogremover.default.values` - Permission for `/fog default get` and `/fog default set`
-- `fogremover.individual.toggle` - Permission for `/fog individual <enable|disable`
-- `fogremover.individual.values` - Permission for `/fog individual get`, `/fog individual set` and `/fog individual unset`
-- `fogremover.individual.values.others` - Allows players to change the player specific view distances for other players.
+- `clearfog.reload` - Permission for `/fog reload`
+- `clearfog.default.toggle` - Permission for `/fog default <enable|disable>`
+- `clearfog.default.values` - Permission for `/fog default get` and `/fog default set`
+- `clearfog.individual.toggle` - Permission for `/fog individual <enable|disable`
+- `clearfog.individual.values` - Permission for `/fog individual get`, `/fog individual set` and `/fog individual unset`
+- `clearfog.individual.values.others` - Allows players to change the player specific view distances for other players.
 
 ## Credits
 

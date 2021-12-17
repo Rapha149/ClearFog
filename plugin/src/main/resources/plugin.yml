@@ -1,59 +1,59 @@
-name: FogRemover
+name: ClearFog
 author: Rapha149
 version: 1.0
-main: de.rapha149.fogremover.FogRemover
+main: de.rapha149.clearfog.ClearFog
 api-version: 1.18
 description: Disables fog by "telling" the client that the view distance is higher.
 website: https://github.com/Rapha149/fog
 
 commands:
   fog:
-    description: Manage the FogRemover plugin.
-    permission: fogremover
+    description: Manage the ClearFog plugin.
+    permission: clearfog
     aliases: [myfog]
 
 permissions:
-  fogremover.*:
+  clearfog.*:
     children:
-      fogremover: true
-  fogremover.reload:
+      clearfog: true
+  clearfog.reload:
     description: Permission for '/fog reload'
     children:
-      fogremover: true
-  fogremover.default:
+      clearfog: true
+  clearfog.default:
     description: Permission for '/fog default'
     children:
-      fogremover: true
-  fogremover.default.*:
+      clearfog: true
+  clearfog.default.*:
     children:
-      fogremover.default: true
-  fogremover.default.toggle:
+      clearfog.default: true
+  clearfog.default.toggle:
     description: Permission for '/fog default <enable|disable>'
     children:
-      fogremover.default: true
-  fogremover.default.values:
+      clearfog.default: true
+  clearfog.default.values:
     description: Permission for '/fog default <get|set>'
     children:
-      fogremover.default: true
-  fogremover.individual:
+      clearfog.default: true
+  clearfog.individual:
     description: Permission for '/fog individual'
     children:
-      fogremover: true
-  fogremover.individual.*:
+      clearfog: true
+  clearfog.individual.*:
     children:
-      fogremover.individual: true
-  fogremover.individual.toggle:
+      clearfog.individual: true
+  clearfog.individual.toggle:
     description: Permission for '/fog individual <enable|disable>'
     children:
-      fogremover.individual: true
-  fogremover.individual.values:
+      clearfog.individual: true
+  clearfog.individual.values:
     description: Permission for '/fog individual <get|set|unset'
     children:
-      fogremover.individual: true
-  fogremover.individual.values.*:
+      clearfog.individual: true
+  clearfog.individual.values.*:
     children:
-      fogremover.individual.values: true
-  fogremover.individual.values.others:
+      clearfog.individual.values: true
+  clearfog.individual.values.others:
     description: Permission to get/set/unset the individual view distance for other people.
     children:
-      fogremover.individual.values: true
+      clearfog.individual.values: true

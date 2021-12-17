@@ -1,4 +1,4 @@
-package de.rapha149.fogremover.version;
+package de.rapha149.clearfog.version;
 
 import io.netty.channel.ChannelPipeline;
 

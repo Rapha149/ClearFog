@@ -1,15 +1,15 @@
-package de.rapha149.fogremover;
+package de.rapha149.clearfog;
 
-import de.rapha149.fogremover.version.VersionWrapper;
+import de.rapha149.clearfog.version.VersionWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static de.rapha149.fogremover.Messages.*;
-import static de.rapha149.fogremover.Util.*;
+import static de.rapha149.clearfog.Messages.*;
+import static de.rapha149.clearfog.Util.*;
 
-public final class FogRemover extends JavaPlugin {
+public final class ClearFog extends JavaPlugin {
 
-    private static FogRemover instance;
+    private static ClearFog instance;
 
     @Override
     public void onEnable() {
@@ -21,7 +21,7 @@ public final class FogRemover extends JavaPlugin {
         } catch (IllegalAccessException | InstantiationException exception) {
             throw new IllegalStateException("Failed to load support for server version " + version, exception);
         } catch (ClassNotFoundException exception) {
-            throw new IllegalStateException("FogRemover does not support the server version \"" + version + "\"", exception);
+            throw new IllegalStateException("ClearFog does not support the server version \"" + version + "\"", exception);
         }
 
         loadMessages();
@@ -39,7 +39,7 @@ public final class FogRemover extends JavaPlugin {
         getLogger().info(getMessage("plugin.enable"));
     }
 
-    public static FogRemover getInstance() {
+    public static ClearFog getInstance() {
         return instance;
     }
 
