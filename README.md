@@ -1,4 +1,4 @@
-# FogRemover
+# ClearFog
 
 Are you also unnerved by the new 1.18 fog system? Did you try to increase the server view distance?  
 **You don't have to!** This Spigot plugin "tells" the player that the view distance is higher than it actually is.
@@ -13,14 +13,20 @@ If you can't increase it for some reason or you don't want to in order to save p
 
 ## How this plugin works
 
-The plugin modifies the login packet that is sent to the client when the client joins and changes the view distance.
+The plugin modifies the login packet that is sent to the client when the client joins and changes the view distance.  
+How that looks:  
+#### Before
+![2021-12-17_17 54 32](https://user-images.githubusercontent.com/49787110/146580689-1eab2fab-446b-4d83-a49d-2d79984fd01f.png)
+#### After
+![2021-12-17_17 54 14](https://user-images.githubusercontent.com/49787110/146580691-a13337b8-a76a-4f0c-916d-bcd688c57a6a.png)
 
 ## Config
 
 The default `config.yml` looks like this:
 ```yml
-enabled: true
-view-distance: 32
+default:
+  enabled: true
+  view-distance: 32
 individual-distances:
   enabled: false
   players: {}
@@ -28,8 +34,9 @@ individual-distances:
 You can change all values using commands, but you can edit the config, too.  
 Here's what the values do:
 
-- `enabled` - Changes whether the default view distance (`view-distance`) is applied.  
-- `view-distance` - The default view distance.  
+- `default`
+  - `enabled` - Changes whether the default view distance is applied.  
+  - `view-distance` - The default view distance.  
 - `individual-distances`  
   - `enabled` - Changes whether player specific view distances are applied.
   - `players` - Here are player specific view distances saved.
@@ -51,14 +58,19 @@ Sub commands are:
 - `/fog individual set <View Distance> [Player]` - Sets the player specific view distance for yourself or another player.
 - `/fog individual unset [Player]` - Removes the player specific view distance for yourself or another player.
 
+You can also use the alias `/myfog` for all `/fog individual` commmands.  
+For example: You can use `/myfog set 16` instead of `/fog individual set 16`.
+
+Please also note that fog is only applied on join, so you have to rejoin for the changes to take effect.
+
 ## Permissions
 
 - `fogremover.reload` - Permission for `/fog reload`
 - `fogremover.default.toggle` - Permission for `/fog default <enable|disable>`
-- `fogremover.default.change` - Permission for `/fog default get` and `/fog default set`
+- `fogremover.default.values` - Permission for `/fog default get` and `/fog default set`
 - `fogremover.individual.toggle` - Permission for `/fog individual <enable|disable`
-- `fogremover.individual.change` - Permission for `/fog individual get`, `/fog individual set` and `/fog individual unset`
-- `fogremover.individual.change.others` - Allows players to change the player specific view distances for other players.
+- `fogremover.individual.values` - Permission for `/fog individual get`, `/fog individual set` and `/fog individual unset`
+- `fogremover.individual.values.others` - Allows players to change the player specific view distances for other players.
 
 ## Credits
 
