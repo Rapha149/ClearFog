@@ -17,7 +17,7 @@ The plugin modifies the login packet that is sent to the client when the client 
 
 ## Config
 
-The default config looks like this:
+The default `config.yml` looks like this:
 ```yml
 enabled: true
 view-distance: 32
@@ -33,6 +33,10 @@ Here's what the values do:
 - `individual-distances`  
   - `enabled` - Changes whether player specific view distances are applied.
   - `players` - Here are player specific view distances saved.
+
+### Messages
+
+You can also change all messages in the `messages.yml` file!
 
 ## Commands
 
