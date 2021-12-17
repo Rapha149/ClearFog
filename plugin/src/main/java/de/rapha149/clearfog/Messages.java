@@ -16,6 +16,7 @@ public class Messages {
     static {
         messageFile = new File(ClearFog.getInstance().getDataFolder(), "messages.yml");
         messageConfig = new YamlConfiguration();
+        messageConfig.options().copyDefaults(true);
         messageConfig.addDefault("prefix", "&8[&4ClearFog&8] ");
         messageConfig.addDefault("plugin.enable", "Plugin successfully enabled.");
         messageConfig.addDefault("plugin.disable", "Plugin disabled.");
@@ -61,17 +62,15 @@ public class Messages {
                 messageConfig.load(messageFile);
             else
                 messageFile.getParentFile().mkdirs();
-            messageConfig.options().copyDefaults(true);
             messageConfig.save(messageFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
             ClearFog.getInstance().getLogger().severe("Failed to load message config.");
-            messageConfig.options().copyDefaults(true);
         }
     }
 
     public static String getMessage(String key) {
-        return ChatColor.translateAlternateColorCodes('&', messageConfig.getString(key, "")
+        return ChatColor.translateAlternateColorCodes('&', messageConfig.getString(key)
                 .replace("%prefix%", messageConfig.getString("prefix")));
     }
 }
