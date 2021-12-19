@@ -62,6 +62,12 @@ public class Messages {
                 messageConfig.load(messageFile);
             else
                 messageFile.getParentFile().mkdirs();
+
+            messageConfig.getKeys(false).forEach(key -> {
+                if(!messageConfig.getDefaults().isSet(key))
+                    messageConfig.set(key, null);
+            });
+
             messageConfig.save(messageFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
