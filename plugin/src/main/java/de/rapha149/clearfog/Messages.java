@@ -27,7 +27,6 @@ public class Messages {
         messageConfig.addDefault("error", "%prefix%&cAn error occured. Check the console for details.");
         messageConfig.addDefault("no_permission", "%prefix%&cYou do not have enough permissions to perform this action.");
         messageConfig.addDefault("player_not_found", "%prefix%&cThe player &7%player% &ccould not be found.");
-        messageConfig.addDefault("feature_not_enabled", "%prefix%&cThis feature is not enabled. You can enable it in the config.");
         messageConfig.addDefault("state_number", "%prefix%&cPlease state a number.");
         messageConfig.addDefault("out_of_bounds", "%prefix%&cPlease state a number between 2 and 32.");
         messageConfig.addDefault("reload", "%prefix%&7Config was reloaded.");
@@ -38,6 +37,7 @@ public class Messages {
         messageConfig.addDefault("default.set.as_before", "%prefix%&6Default view distance is already set to &7%distance%&7.");
         messageConfig.addDefault("default.set.success", "%prefix%&7Default view distance is now set to &6%distance%&7.");
         messageConfig.addDefault("default.get", "%prefix%&7Default view distance is currently &6%distance%&7.");
+        messageConfig.addDefault("individual.feature_not_enabled", "%prefix%&cThis feature is not enabled. You can enable it by using &7/fog individual enable&c.");
         messageConfig.addDefault("individual.enable.as_before", "%prefix%&6Player specific view distances are already enabled.");
         messageConfig.addDefault("individual.enable.success", "%prefix%&7Player specific view distances are now &aenabled.");
         messageConfig.addDefault("individual.disable.as_before", "%prefix%&6Player specific view distances are already disabled.");

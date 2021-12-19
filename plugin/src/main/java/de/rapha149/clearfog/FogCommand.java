@@ -174,7 +174,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                     case "set":
                     case "unset":
                         if (!config.getBoolean("individual.enabled")) {
-                            sender.sendMessage(getMessage("feature_not_enabled"));
+                            sender.sendMessage(getMessage("individual.feature_not_enabled"));
                             break;
                         }
 
