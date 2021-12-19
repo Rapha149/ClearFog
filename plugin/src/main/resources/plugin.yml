@@ -4,7 +4,7 @@ version: 1.2.1
 main: de.rapha149.clearfog.ClearFog
 api-version: 1.18
 description: Disables fog by "telling" the client that the view distance is higher.
-website: https://github.com/Rapha149/fog
+website: https://github.com/Rapha149/ClearFog
 
 commands:
   fog:
