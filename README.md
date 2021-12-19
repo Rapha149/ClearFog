@@ -29,6 +29,7 @@ How that looks:
 
 The default `config.yml` looks like this:
 ```yml
+check-for-updates: true
 default:
   enabled: true
   view-distance: 32
@@ -39,6 +40,7 @@ distances:
 You can change all values using commands, but you can edit the config, too.  
 Here's what the values do:
 
+- `check-for-updates` - Whether to check for plugin updates on startup.
 - `default`
   - `enabled` - Changes whether the default view distance is applied.  
   - `view-distance` - The default view distance.  
@@ -83,4 +85,4 @@ This plugin collects anonymous server stats with [bStats](https://bstats.org), a
 
 ## Credits
 
-Credits go to [dmulloy2](https://github.com/dmulloy2) and aadnk for [TinyProtocol](https://github.com/dmulloy2/ProtocolLib/blob/master/TinyProtocol/src/main/java/com/comphenix/ticyprotocol/TinyProtocol.java) (a part of [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997)) from which I used some code. 
+Credits go to [dmulloy2](https://github.com/dmulloy2) and aadnk for [TinyProtocol](https://github.com/dmulloy2/ProtocolLib/blob/master/TinyProtocol/src/main/java/com/comphenix/tinyprotocol/TinyProtocol.java) (a part of [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997)) from which I used some code. 
