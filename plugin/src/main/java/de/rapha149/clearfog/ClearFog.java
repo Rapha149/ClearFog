@@ -6,8 +6,14 @@ import de.rapha149.clearfog.version.VersionWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static de.rapha149.clearfog.Messages.*;
-import static de.rapha149.clearfog.Util.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static de.rapha149.clearfog.Messages.getMessage;
+import static de.rapha149.clearfog.Messages.loadMessages;
+import static de.rapha149.clearfog.Util.WRAPPER;
+import static de.rapha149.clearfog.Util.config;
 
 public final class ClearFog extends JavaPlugin {
 
@@ -29,12 +35,22 @@ public final class ClearFog extends JavaPlugin {
         loadMessages();
         loadConfig();
 
+        boolean ploudos;
+        try {
+            ploudos = Files.readString(Path.of("eula.txt")).contains("PloudOS");
+        } catch (IOException e) {
+            e.printStackTrace();
+            ploudos = false;
+        }
+        boolean finalPloudos = ploudos;
+
         Metrics metrics = new Metrics(this, 13628);
+        metrics.addCustomChart(new SingleLineChart("ploudos_servers", () -> finalPloudos ? 1 : 0));
         metrics.addCustomChart(new SingleLineChart("default_view_distance_enabled", () -> config.getBoolean("default.enabled") ? 1 : 0));
         metrics.addCustomChart(new SingleLineChart("player_specific_view_distance_enabled", () -> config.getBoolean("individual.enabled") ? 1 : 0));
         metrics.addCustomChart(new SimplePie("default_view_distance", () -> String.valueOf(config.getInt("default.view-distance"))));
 
-        if(config.getBoolean("check-for-updates")) {
+        if (config.getBoolean("check-for-updates")) {
             String version = Updates.getAvailableVersion(true);
             if (version == null)
                 getLogger().info(getMessage("plugin.up_to_date"));
