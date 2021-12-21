@@ -13,19 +13,19 @@ public class Util {
     public static VersionWrapper WRAPPER;
 
     public static int checkViewDistance(int distance) {
-        return Math.max(2, Math.min(32, distance));
+        return Math.max(1, distance);
     }
 
     public static void checkViewDistances() {
         if (config.getBoolean("default.enabled")) {
             int viewDistance = config.getInt("default.view-distance");
-            if (viewDistance < 2 || viewDistance > 32)
+            if (viewDistance < 1)
                 ClearFog.getInstance().getLogger().warning("The view distance set in the config is invalid. It has to be between 2 and 32.");
         }
         if (config.getBoolean("individual.enabled")) {
             config.getConfigurationSection("individual.players").getKeys(false).forEach(uuid -> {
                 int viewDistance = config.getInt("individual.players." + uuid);
-                if (viewDistance < 2 || viewDistance > 32)
+                if (viewDistance < 1)
                     ClearFog.getInstance().getLogger().warning("The individual view distance for " + uuid +
                                                                " set in the config is invalid. It has to be between 2 and 32.");
             });
