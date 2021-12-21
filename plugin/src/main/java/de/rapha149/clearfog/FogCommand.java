@@ -117,7 +117,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                                 break;
                             }
 
-                            if (viewDistance < 2 || viewDistance > 32) {
+                            if (viewDistance < 1) {
                                 sender.sendMessage(getMessage("out_of_bounds"));
                                 break;
                             }
@@ -222,7 +222,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                                     break;
                                 }
 
-                                if (viewDistance < 2 || viewDistance > 32) {
+                                if (viewDistance < 1) {
                                     sender.sendMessage(getMessage("out_of_bounds"));
                                     break;
                                 }
