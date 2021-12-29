@@ -286,12 +286,6 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                     list.addAll(Arrays.asList("get", "set", "unset"));
             }
         }
-        if (args.length == 3 && args[1].equalsIgnoreCase("set") &&
-            ((args[0].equalsIgnoreCase("default") && sender.hasPermission("clearfog.default")) ||
-             (args[0].equalsIgnoreCase("individual") && sender.hasPermission("clearfog.individual")))) {
-            for (int i = 2; i <= 32; i++)
-                list.add(String.valueOf(i));
-        }
         if (args[0].equalsIgnoreCase("individual") && sender.hasPermission("clearfog.individual.values.others") &&
             args.length == (args[1].equalsIgnoreCase("set") ? 4 : 3)) {
             Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).forEach(list::add);
