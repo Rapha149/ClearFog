@@ -13,6 +13,8 @@ public interface VersionWrapper {
 
     Class<?> getLoginPlayPacketClass();
 
+    Class<?> getUpdateViewDistanceClass();
+
     UUID getUUIDFromLoginPacket(Object obj);
 
     Object replaceViewDistance(Object obj, int viewDistance);

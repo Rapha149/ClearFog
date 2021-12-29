@@ -52,7 +52,8 @@ public class Util {
                                     if (msg.getClass() == WRAPPER.getLoginSuccessPacketClass())
                                         player = WRAPPER.getUUIDFromLoginPacket(msg);
 
-                                    if (msg.getClass() == WRAPPER.getLoginPlayPacketClass()) {
+                                    if (msg.getClass() == WRAPPER.getLoginPlayPacketClass() ||
+                                        msg.getClass() == WRAPPER.getUpdateViewDistanceClass()) {
                                         int viewDistance = -1;
                                         if (config.getBoolean("default.enabled"))
                                             viewDistance = config.getInt("default.view-distance");
@@ -63,7 +64,6 @@ public class Util {
 
                                         if (viewDistance != -1)
                                             msg = WRAPPER.replaceViewDistance(msg, checkViewDistance(viewDistance));
-                                        pipeline.remove(HANDLER_NAME);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
