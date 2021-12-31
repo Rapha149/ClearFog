@@ -30,10 +30,11 @@ How that looks:
 The default `config.yml` looks like this:
 ```yml
 check-for-updates: true
+direct-view-distance-updates: false
 default:
   enabled: true
   view-distance: 32
-distances:
+individual:
   enabled: false
   players: {}
 ```
@@ -41,6 +42,7 @@ You can change all values using commands, but you can edit the config, too.
 Here's what the values do:
 
 - `check-for-updates` - Whether to check for plugin updates on startup.
+- `direct-view-distance-updates` - Whether view distances should be updated directly when they are being changed by commands or by reloading the config. Please note that this is not recommended because it does not look good and the method for doing so is messy.
 - `default`
   - `enabled` - Changes whether the default view distance is applied.  
   - `view-distance` - The default view distance.  
@@ -57,10 +59,15 @@ You can also change all messages in the `messages.yml` file!
 The plugin contains one basic command: `/fog`  
 Sub commands are:
 - `/fog reload` - Reloads the config.
+- `/fog directupdates status` - Checks whether direct updates are enabled.
+- `/fog directupdates <enable|disable>` - Enable or disable direct updates.
+- `/fog default status` - Checks whether the default view distance is enabled.
 - `/fog default <enable/disable>` - Enables or disables the default view distance.
 - `/fog default get` - Returns the default view distance.
 - `/fog default set <View Distance>` - Sets the default view distance.
+- `/fog individual status` - Checks whether player specific view distances are enabled.
 - `/fog individual <enable|disable>` - Enables or disables player specific view distances.
+- `/fog individual list` - Lists player specific view distances.
 - `/fog individual get [Player]` - Returns the player specific view distance for yourself or another player.
 - `/fog individual set <View Distance> [Player]` - Sets the player specific view distance for yourself or another player.
 - `/fog individual unset [Player]` - Removes the player specific view distance for yourself or another player.
@@ -73,9 +80,11 @@ Please also note that fog is only applied on join, so you have to rejoin for the
 ## Permissions
 
 - `clearfog.reload` - Permission for `/fog reload`
-- `clearfog.default.toggle` - Permission for `/fog default <enable|disable>`
+- `clearfog.directupdates` - Permission for `/fog directupdates`
+- `clearfog.default.status` - Permission for `/fog default status` and `/fog default <enable|disable>`
 - `clearfog.default.values` - Permission for `/fog default get` and `/fog default set`
-- `clearfog.individual.toggle` - Permission for `/fog individual <enable|disable>`
+- `clearfog.individual.status` - Permission for `/fog individual status` and `/fog individual <enable|disable>`
+- `clearfog.individual.list` - Permission for `/fog individual list`
 - `clearfog.individual.values` - Permission for `/fog individual get`, `/fog individual set` and `/fog individual unset`
 - `clearfog.individual.values.others` - Allows players to change the player specific view distances for other players.
 
