@@ -22,14 +22,23 @@ public class Messages {
         messageConfig.addDefault("plugin.disable", "Plugin disabled.");
         messageConfig.addDefault("plugin.up_to_date", "Your version of this plugin is up to date!");
         messageConfig.addDefault("plugin.outdated", "There's a new version available for this plugin: %version%" +
-                                                          "\nYou can download it from: %url%");
+                                                    "\nYou can download it from: %url%");
         messageConfig.addDefault("syntax", "%prefix%&cSyntax error! Please use &7/%syntax%&c.");
-        messageConfig.addDefault("error", "%prefix%&cAn error occured. Check the console for details.");
         messageConfig.addDefault("no_permission", "%prefix%&cYou do not have enough permissions to perform this action.");
         messageConfig.addDefault("player_not_found", "%prefix%&cThe player &7%player% &ccould not be found.");
         messageConfig.addDefault("state_number", "%prefix%&cPlease state a number.");
         messageConfig.addDefault("out_of_bounds", "%prefix%&cPlease state a number between 2 and 32.");
         messageConfig.addDefault("reload", "%prefix%&7Config was reloaded.");
+        messageConfig.addDefault("directupdates.status.enabled", "%prefix%&7Direct updates are currently &aenabled&7.");
+        messageConfig.addDefault("directupdates.status.disabled", "%prefix%&7Direct updates are currently &cdisabled&7.");
+        messageConfig.addDefault("directupdates.enable.as_before", "%prefix%&6Direct updates are already enabled.");
+        messageConfig.addDefault("directupdates.enable.success", "%prefix%&7Direct updates are now &aenabled." +
+                                                                 "\\n&6Direct updates will update the view distance directly when it was changed. " +
+                                                                 "This is &lnot &6recommeded because it does not look good.");
+        messageConfig.addDefault("directupdates.disable.as_before", "%prefix%&6Direct updates are already disabled.");
+        messageConfig.addDefault("directupdates.disable.success", "%prefix%&7Direct updates are now &cdisabled.");
+        messageConfig.addDefault("default.status.enabled", "%prefix%&7Default view distance is currently &aenabled&7.");
+        messageConfig.addDefault("default.status.disabled", "%prefix%&7Default view distance is currently &cdisabled&7.");
         messageConfig.addDefault("default.enable.as_before", "%prefix%&6Default view distance is already enabled.");
         messageConfig.addDefault("default.enable.success", "%prefix%&7Default view distance is now &aenabled.");
         messageConfig.addDefault("default.disable.as_before", "%prefix%&6Default view distance is already disabled.");
@@ -38,10 +47,15 @@ public class Messages {
         messageConfig.addDefault("default.set.success", "%prefix%&7Default view distance is now set to &6%distance%&7.");
         messageConfig.addDefault("default.get", "%prefix%&7Default view distance is currently &6%distance%&7.");
         messageConfig.addDefault("individual.feature_not_enabled", "%prefix%&cThis feature is not enabled. You can enable it by using &7/fog individual enable&c.");
+        messageConfig.addDefault("individual.status.enabled", "%prefix%&7Player specific view distances are currently &aenabled&7.");
+        messageConfig.addDefault("individual.status.disabled", "%prefix%&7Player specific view distances are currently &cdisabled&7.");
         messageConfig.addDefault("individual.enable.as_before", "%prefix%&6Player specific view distances are already enabled.");
         messageConfig.addDefault("individual.enable.success", "%prefix%&7Player specific view distances are now &aenabled.");
         messageConfig.addDefault("individual.disable.as_before", "%prefix%&6Player specific view distances are already disabled.");
         messageConfig.addDefault("individual.disable.success", "%prefix%&7Player specific view distances are now &cdisabled.");
+        messageConfig.addDefault("individual.list.nothing", "%prefix%&7There are no player specific view distances.");
+        messageConfig.addDefault("individual.list.prefix", "%prefix%&7Player specific view distances:");
+        messageConfig.addDefault("individual.list.part", "&7- %player%: &6%distance%");
         messageConfig.addDefault("individual.get.self.return", "%prefix%&7Your individual view distance is &6%distance%&7.");
         messageConfig.addDefault("individual.get.self.not_set", "%prefix%&7Your individual view distance is &6not set&7.");
         messageConfig.addDefault("individual.get.others.return", "%prefix%&7The individual view distance of &5%player% &7is &6%distance%&7.");
@@ -64,7 +78,7 @@ public class Messages {
                 messageFile.getParentFile().mkdirs();
 
             messageConfig.getKeys(false).forEach(key -> {
-                if(!messageConfig.getDefaults().isSet(key))
+                if (!messageConfig.getDefaults().isSet(key))
                     messageConfig.set(key, null);
             });
 
@@ -77,6 +91,7 @@ public class Messages {
 
     public static String getMessage(String key) {
         return ChatColor.translateAlternateColorCodes('&', messageConfig.getString(key)
+                .replace("\\n", "\n")
                 .replace("%prefix%", messageConfig.getString("prefix")));
     }
 }

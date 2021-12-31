@@ -6,9 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static de.rapha149.clearfog.Messages.getMessage;
 import static de.rapha149.clearfog.Messages.loadMessages;
@@ -33,8 +31,8 @@ public class FogCommand implements CommandExecutor, TabCompleter {
         boolean myfog = alias.equals("myfog");
         if (myfog)
             args = (String[]) ArrayUtils.addAll(new String[]{"individual"}, args);
-        if (args.length < 1 || !args[0].toLowerCase().matches("reload|default|individual")) {
-            sender.sendMessage(getMessage("syntax").replace("%syntax%", alias + " <reload|default|individual>"));
+        if (args.length < 1 || !args[0].toLowerCase().matches("reload|directupdates|default|individual")) {
+            sender.sendMessage(getMessage("syntax").replace("%syntax%", alias + " <reload|directupdates|default|individual>"));
             return true;
         }
 
@@ -51,32 +49,83 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                 config = plugin.getConfig();
                 config.options().copyDefaults(true);
                 plugin.saveConfig();
-                try {
-                    unregisterHandler();
-                    registerHandler();
-                    sender.sendMessage(getMessage("reload"));
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    e.printStackTrace();
-                    sender.sendMessage(getMessage("error"));
+                sender.sendMessage(getMessage("reload"));
+
+                Util.updateViewDistances();
+                break;
+            case "directupdates": {
+                if (!sender.hasPermission("clearfog.directupdates")) {
+                    sender.sendMessage(getMessage("no_permission"));
+                    break;
+                }
+
+                if (args.length < 2 || !args[1].toLowerCase().matches("status|enable|disable")) {
+                    sender.sendMessage(getMessage("syntax").replace("%syntax%",
+                            alias + " directupdates <status|enable|disable>"));
+                    break;
+                }
+
+                String arg = args[1].toLowerCase();
+                switch (arg) {
+                    case "status":
+                        if (!sender.hasPermission("clearfog.directupdates.status")) {
+                            sender.sendMessage(getMessage("no_permission"));
+                            break;
+                        }
+
+                        boolean enabled = config.getBoolean("direct-view-distance-updates");
+                        sender.sendMessage(getMessage("directupdates.status." + (enabled ? "enabled" : "disabled")));
+                        break;
+                    case "enable":
+                    case "disable":
+                        if (!sender.hasPermission("clearfog.directupdates.status")) {
+                            sender.sendMessage(getMessage("no_permission"));
+                            break;
+                        }
+
+                        boolean enable = arg.equals("enable");
+                        String messagePrefix = "directupdates." + arg + ".";
+                        if (config.getBoolean("direct-view-distance-updates") == enable) {
+                            sender.sendMessage(getMessage(messagePrefix + "as_before"));
+                            break;
+                        }
+
+                        config.set("direct-view-distance-updates", enable);
+                        plugin.saveConfig();
+                        sender.sendMessage(getMessage(messagePrefix + "success"));
+
+                        if(enable)
+                            Util.updateViewDistances();
+                        break;
                 }
                 break;
+            }
             case "default": {
                 if (!sender.hasPermission("clearfog.default")) {
                     sender.sendMessage(getMessage("no_permission"));
                     break;
                 }
 
-                if (args.length < 2 || !args[1].toLowerCase().matches("enable|disable|get|set")) {
+                if (args.length < 2 || !args[1].toLowerCase().matches("status|enable|disable|get|set")) {
                     sender.sendMessage(getMessage("syntax").replace("%syntax%",
-                            alias + " default <enable|disable|get|set>"));
+                            alias + " default <status|enable|disable|get|set>"));
                     break;
                 }
 
                 String arg = args[1].toLowerCase();
                 switch (arg) {
+                    case "status":
+                        if (!sender.hasPermission("clearfog.default.status")) {
+                            sender.sendMessage(getMessage("no_permission"));
+                            break;
+                        }
+
+                        boolean enabled = config.getBoolean("default.enabled");
+                        sender.sendMessage(getMessage("default.status." + (enabled ? "enabled" : "disabled")));
+                        break;
                     case "enable":
                     case "disable":
-                        if (!sender.hasPermission("clearfog.default.toggle")) {
+                        if (!sender.hasPermission("clearfog.default.status")) {
                             sender.sendMessage(getMessage("no_permission"));
                             break;
                         }
@@ -91,6 +140,8 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                         config.set("default.enabled", enable);
                         plugin.saveConfig();
                         sender.sendMessage(getMessage(messagePrefix + "success"));
+
+                        updateViewDistances();
                         break;
                     case "get":
                     case "set":
@@ -131,6 +182,8 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                             plugin.saveConfig();
                             sender.sendMessage(getMessage("default.set.success")
                                     .replace("%distance%", String.valueOf(viewDistance)));
+
+                            updateViewDistances();
                         }
                         break;
                 }
@@ -143,17 +196,26 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                 }
 
                 String syntaxPrefix = alias + (!myfog ? " individual " : " ");
-                if (args.length < 2 || !args[1].toLowerCase().matches("enable|disable|get|set|unset")) {
+                if (args.length < 2 || !args[1].toLowerCase().matches("status|enable|disable|list|get|set|unset")) {
                     sender.sendMessage(getMessage("syntax").replace("%syntax%",
-                            syntaxPrefix + "<enable|disable|get|set|unset>"));
+                            syntaxPrefix + "<status|enable|disable|list|get|set|unset>"));
                     break;
                 }
 
                 String arg = args[1].toLowerCase();
                 switch (arg) {
+                    case "status":
+                        if (!sender.hasPermission("clearfog.individual.status")) {
+                            sender.sendMessage(getMessage("no_permission"));
+                            break;
+                        }
+
+                        boolean enabled = config.getBoolean("individual.enabled");
+                        sender.sendMessage(getMessage("individual.status." + (enabled ? "enabled" : "disabled")));
+                        break;
                     case "enable":
                     case "disable": {
-                        if (!sender.hasPermission("clearfog.individual.toggle")) {
+                        if (!sender.hasPermission("clearfog.individual.status")) {
                             sender.sendMessage(getMessage("no_permission"));
                             break;
                         }
@@ -168,8 +230,35 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                         config.set("individual.enabled", enable);
                         plugin.saveConfig();
                         sender.sendMessage(getMessage(messagePrefix + "success"));
+
+                        updateViewDistances();
                         break;
                     }
+                    case "list":
+                        if (!config.getBoolean("individual.enabled")) {
+                            sender.sendMessage(getMessage("individual.feature_not_enabled"));
+                            break;
+                        }
+
+                        if (!sender.hasPermission("clearfog.individual.list")) {
+                            sender.sendMessage(getMessage("no_permission"));
+                            break;
+                        }
+
+                        Set<String> players = config.getConfigurationSection("individual.players").getKeys(false);
+                        if (players.isEmpty()) {
+                            sender.sendMessage(getMessage("individual.list.nothing"));
+                            break;
+                        }
+
+                        sender.sendMessage(getMessage("individual.list.prefix"));
+                        String part = getMessage("individual.list.part");
+                        players.forEach(uuid -> {
+                            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+                            sender.sendMessage(part.replace("%player%", player.hasPlayedBefore() ? player.getName() : uuid)
+                                    .replace("%distance%", String.valueOf(config.getInt("individual.players." + uuid))));
+                        });
+                        break;
                     case "get":
                     case "set":
                     case "unset":
@@ -238,6 +327,9 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                                 sender.sendMessage(getMessage(messagePrefix + "success")
                                         .replace("%distance%", String.valueOf(viewDistance))
                                         .replace("%player%", target.getName()));
+
+                                if (target.isOnline())
+                                    updateViewDistance(target.getPlayer());
                             } else
                                 sender.sendMessage(getMessage("syntax").replace("%syntax%",
                                         syntaxPrefix + "set <View Distance>" + (permOthers ? " [Player]" : "")));
@@ -250,6 +342,9 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                             config.set(key, null);
                             plugin.saveConfig();
                             sender.sendMessage(getMessage(messagePrefix + "success").replace("%player%", target.getName()));
+
+                            if (target.isOnline())
+                                updateViewDistance(target.getPlayer());
                         }
                         break;
                 }
@@ -265,6 +360,8 @@ public class FogCommand implements CommandExecutor, TabCompleter {
 
         List<String> list = new ArrayList<>();
         if (args.length == 1) {
+            if (sender.hasPermission("clearfog.directupdates"))
+                list.add("directupdates");
             if (sender.hasPermission("clearfog.reload"))
                 list.add("reload");
             if (sender.hasPermission("clearfog.default"))
@@ -273,15 +370,21 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                 list.add("individual");
         }
         if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("directupdates") &&
+                sender.hasPermission("clearfog.directupdates.status")) {
+                list.addAll(Arrays.asList("status", "enable", "disable"));
+            }
             if (args[0].equalsIgnoreCase("default")) {
-                if (sender.hasPermission("clearfog.default.toggle"))
-                    list.addAll(Arrays.asList("enable", "disable"));
+                if (sender.hasPermission("clearfog.default.status"))
+                    list.addAll(Arrays.asList("status", "enable", "disable"));
                 if (sender.hasPermission("clearfog.default.values"))
                     list.addAll(Arrays.asList("get", "set"));
             }
             if (args[0].equalsIgnoreCase("individual")) {
-                if (sender.hasPermission("clearfog.individual.toggle"))
-                    list.addAll(Arrays.asList("enable", "disable"));
+                if (sender.hasPermission("clearfog.individual.status"))
+                    list.addAll(Arrays.asList("status", "enable", "disable"));
+                if (sender.hasPermission("clearfog.individual.list"))
+                    list.add("list");
                 if (sender.hasPermission("clearfog.individual.values"))
                     list.addAll(Arrays.asList("get", "set", "unset"));
             }

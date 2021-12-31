@@ -91,6 +91,7 @@ public final class ClearFog extends JavaPlugin {
     void loadConfig() {
         config = getConfig();
         config.addDefault("check-for-updates", true);
+        config.addDefault("direct-view-distance-updates", false);
         config.addDefault("default.enabled", true);
         config.addDefault("default.view-distance", 32);
         config.addDefault("individual.enabled", false);

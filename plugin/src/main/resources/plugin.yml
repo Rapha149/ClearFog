@@ -20,6 +20,10 @@ permissions:
     description: Permission for '/fog reload'
     children:
       clearfog: true
+  clearfog.directupdates:
+    description: Permission for '/fog directupdates'
+    children:
+      clearfog: true
   clearfog.default:
     description: Permission for '/fog default'
     children:
@@ -27,8 +31,8 @@ permissions:
   clearfog.default.*:
     children:
       clearfog.default: true
-  clearfog.default.toggle:
-    description: Permission for '/fog default <enable|disable>'
+  clearfog.default.status:
+    description: Permission for '/fog default <status|enable|disable>'
     children:
       clearfog.default: true
   clearfog.default.values:
@@ -42,8 +46,12 @@ permissions:
   clearfog.individual.*:
     children:
       clearfog.individual: true
-  clearfog.individual.toggle:
-    description: Permission for '/fog individual <enable|disable>'
+  clearfog.individual.status:
+    description: Permission for '/fog individual <status|enable|disable>'
+    children:
+      clearfog.individual: true
+  clearfog.individual.list:
+    description: Permission for '/fog individual list'
     children:
       clearfog.individual: true
   clearfog.individual.values:
