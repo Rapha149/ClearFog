@@ -1,5 +1,6 @@
 package de.rapha149.clearfog;
 
+import de.rapha149.clearfog.Metrics.DrilldownPie;
 import de.rapha149.clearfog.Metrics.SimplePie;
 import de.rapha149.clearfog.Metrics.SingleLineChart;
 import de.rapha149.clearfog.version.VersionWrapper;
@@ -9,6 +10,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.rapha149.clearfog.Messages.getMessage;
 import static de.rapha149.clearfog.Messages.loadMessages;
@@ -49,6 +52,14 @@ public final class ClearFog extends JavaPlugin {
         metrics.addCustomChart(new SingleLineChart("default_view_distance_enabled", () -> config.getBoolean("default.enabled") ? 1 : 0));
         metrics.addCustomChart(new SingleLineChart("player_specific_view_distance_enabled", () -> config.getBoolean("individual.enabled") ? 1 : 0));
         metrics.addCustomChart(new SimplePie("default_view_distance", () -> String.valueOf(config.getInt("default.view-distance"))));
+        metrics.addCustomChart(new SimplePie("direct_updates_enabled", () -> String.valueOf(config.getBoolean("direct-view-distance-updates"))));
+        metrics.addCustomChart(new DrilldownPie("check_for_updates", () -> {
+            Map<String, Map<String, Integer>> map = new HashMap<>();
+            Map<String, Integer> entry = new HashMap<>();
+            entry.put(getDescription().getVersion(), 1);
+            map.put(String.valueOf(config.getBoolean("check-for-updates")), entry);
+            return map;
+        }));
 
         if (config.getBoolean("check-for-updates")) {
             String version = Updates.getAvailableVersion(true);
