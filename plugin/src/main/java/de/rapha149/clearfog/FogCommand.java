@@ -94,7 +94,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                         plugin.saveConfig();
                         sender.sendMessage(getMessage(messagePrefix + "success"));
 
-                        if(enable)
+                        if (enable)
                             Util.updateViewDistances();
                         break;
                 }
@@ -255,7 +255,7 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                         String part = getMessage("individual.list.part");
                         players.forEach(uuid -> {
                             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
-                            sender.sendMessage(part.replace("%player%", player.hasPlayedBefore() ? player.getName() : uuid)
+                            sender.sendMessage(part.replace("%player%", player.isOnline() || player.hasPlayedBefore() ? player.getName() : uuid)
                                     .replace("%distance%", String.valueOf(config.getInt("individual.players." + uuid))));
                         });
                         break;
@@ -278,9 +278,10 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                         OfflinePlayer target;
                         if (args.length >= (set ? 4 : 3) && permOthers) {
                             self = false;
-                            target = Bukkit.getOfflinePlayer(args[set ? 3 : 2]);
-                            if (!target.hasPlayedBefore()) {
-                                sender.sendMessage(getMessage("player_not_found").replace("%player%", args[set ? 3 : 2]));
+                            String name = args[set ? 3 : 2];
+                            target = Bukkit.getOfflinePlayer(name);
+                            if (!target.isOnline() && !target.hasPlayedBefore()) {
+                                sender.sendMessage(getMessage("player_not_found").replace("%player%", name));
                                 break;
                             }
                         } else if (sender instanceof Player) {
