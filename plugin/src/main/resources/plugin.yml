@@ -10,7 +10,7 @@ commands:
   fog:
     description: Manage the ClearFog plugin.
     permission: clearfog
-    aliases: [myfog]
+    aliases: [worldfog, myfog]
 
 permissions:
   clearfog.*:
@@ -39,6 +39,25 @@ permissions:
     description: Permission for '/fog default <get|set>'
     children:
       clearfog.default: true
+  clearfog.world:
+    description: Permission for '/fog world'
+    children:
+      clearfog: true
+  clearfog.world.*:
+    children:
+      clearfog.world: true
+  clearfog.world.status:
+    description: Permission for '/fog world <status|enable|disable>'
+    children:
+      clearfog.world: true
+  clearfog.world.list:
+    description: Permission for '/fog world list'
+    children:
+      clearfog.world: true
+  clearfog.world.values:
+    description: Permission for '/fog world <get|set|unset>'
+    children:
+      clearfog.world: true
   clearfog.individual:
     description: Permission for '/fog individual'
     children:
@@ -55,7 +74,7 @@ permissions:
     children:
       clearfog.individual: true
   clearfog.individual.values:
-    description: Permission for '/fog individual <get|set|unset'
+    description: Permission for '/fog individual <get|set|unset>'
     children:
       clearfog.individual: true
   clearfog.individual.values.*:

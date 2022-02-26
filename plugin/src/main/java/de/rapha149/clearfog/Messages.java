@@ -27,14 +27,14 @@ public class Messages {
         messageConfig.addDefault("no_permission", "%prefix%&cYou do not have enough permissions to perform this action.");
         messageConfig.addDefault("player_not_found", "%prefix%&cThe player &7%player% &ccould not be found.");
         messageConfig.addDefault("state_number", "%prefix%&cPlease state a number.");
-        messageConfig.addDefault("out_of_bounds", "%prefix%&cPlease state a number between 2 and 32.");
+        messageConfig.addDefault("out_of_bounds", "%prefix%&cPlease state a number above or equal to 1.");
         messageConfig.addDefault("reload", "%prefix%&7Config was reloaded.");
         messageConfig.addDefault("directupdates.status.enabled", "%prefix%&7Direct updates are currently &aenabled&7.");
         messageConfig.addDefault("directupdates.status.disabled", "%prefix%&7Direct updates are currently &cdisabled&7.");
         messageConfig.addDefault("directupdates.enable.as_before", "%prefix%&6Direct updates are already enabled.");
         messageConfig.addDefault("directupdates.enable.success", "%prefix%&7Direct updates are now &aenabled." +
                                                                  "\\n&6Direct updates will update the view distance directly when it was changed. " +
-                                                                 "This is &lnot &6recommeded because it does not look good.");
+                                                                 "This is &lnot &6recommeded as it does not look very good.");
         messageConfig.addDefault("directupdates.disable.as_before", "%prefix%&6Direct updates are already disabled.");
         messageConfig.addDefault("directupdates.disable.success", "%prefix%&7Direct updates are now &cdisabled.");
         messageConfig.addDefault("default.status.enabled", "%prefix%&7Default view distance is currently &aenabled&7.");
@@ -46,6 +46,23 @@ public class Messages {
         messageConfig.addDefault("default.set.as_before", "%prefix%&6Default view distance is already set to &7%distance%&7.");
         messageConfig.addDefault("default.set.success", "%prefix%&7Default view distance is now set to &6%distance%&7.");
         messageConfig.addDefault("default.get", "%prefix%&7Default view distance is currently &6%distance%&7.");
+        messageConfig.addDefault("world.not_found", "%prefix%&cThe world &7%world% &ccould not be found.");
+        messageConfig.addDefault("world.feature_not_enabled", "%prefix%&cThis feature is not enabled. You can enable it by using &7/fog world enable&c.");
+        messageConfig.addDefault("world.status.enabled", "%prefix%&7World specific view distances are currently &aenabled&7.");
+        messageConfig.addDefault("world.status.disabled", "%prefix%&7World specific view distances are currently &cdisabled&7.");
+        messageConfig.addDefault("world.enable.as_before", "%prefix%&6World specific view distances are already enabled.");
+        messageConfig.addDefault("world.enable.success", "%prefix%&7World specific view distances are now &aenabled.");
+        messageConfig.addDefault("world.disable.as_before", "%prefix%&6World specific view distances are already disabled.");
+        messageConfig.addDefault("world.disable.success", "%prefix%&7World specific view distances are now &cdisabled.");
+        messageConfig.addDefault("world.list.nothing", "%prefix%&7There are no world specific view distances.");
+        messageConfig.addDefault("world.list.prefix", "%prefix%&7World specific view distances:");
+        messageConfig.addDefault("world.list.part", "&7- %world%: &6%distance%");
+        messageConfig.addDefault("world.get.return", "%prefix%&7The view distance of the world &5%world% &7is &6%distance%&7.");
+        messageConfig.addDefault("world.get.not_set", "%prefix%&7The view distance of the world &5%world% &7is &6not set&7.");
+        messageConfig.addDefault("world.set.as_before", "%prefix%&6The view distance of the world &5%world% &cis already set to &7%distance%&c.");
+        messageConfig.addDefault("world.set.success", "%prefix%&7The view distance of the world &5%world% &7was set to &6%distance%&7.");
+        messageConfig.addDefault("world.unset.does_not_exist", "%prefix%&7The world &5%world% &cdoes not have a view distance.");
+        messageConfig.addDefault("world.unset.success", "%prefix%&7The view distance of the world &5%world% &7was removed.");
         messageConfig.addDefault("individual.feature_not_enabled", "%prefix%&cThis feature is not enabled. You can enable it by using &7/fog individual enable&c.");
         messageConfig.addDefault("individual.status.enabled", "%prefix%&7Player specific view distances are currently &aenabled&7.");
         messageConfig.addDefault("individual.status.disabled", "%prefix%&7Player specific view distances are currently &cdisabled&7.");

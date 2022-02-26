@@ -51,6 +51,7 @@ public final class ClearFog extends JavaPlugin {
         metrics.addCustomChart(new SingleLineChart("ploudos_servers", () -> finalPloudos ? 1 : 0));
         metrics.addCustomChart(new SingleLineChart("default_view_distance_enabled", () -> config.getBoolean("default.enabled") ? 1 : 0));
         metrics.addCustomChart(new SingleLineChart("player_specific_view_distance_enabled", () -> config.getBoolean("individual.enabled") ? 1 : 0));
+        metrics.addCustomChart(new SingleLineChart("world_specific_view_distance_enabled", () -> config.getBoolean("world.enabled") ? 1 : 0));
         metrics.addCustomChart(new SimplePie("default_view_distance", () -> String.valueOf(config.getInt("default.view-distance"))));
         metrics.addCustomChart(new SimplePie("direct_updates_enabled", () -> String.valueOf(config.getBoolean("direct-view-distance-updates"))));
         metrics.addCustomChart(new DrilldownPie("check_for_updates", () -> {
@@ -105,6 +106,9 @@ public final class ClearFog extends JavaPlugin {
         config.addDefault("direct-view-distance-updates", false);
         config.addDefault("default.enabled", true);
         config.addDefault("default.view-distance", 32);
+        config.addDefault("world.enabled", false);
+        if (!config.isConfigurationSection("world.worlds"))
+            config.createSection("world.worlds");
         config.addDefault("individual.enabled", false);
         if (!config.isConfigurationSection("individual.players"))
             config.createSection("individual.players");

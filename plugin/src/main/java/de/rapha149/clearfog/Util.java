@@ -23,21 +23,41 @@ public class Util {
         if (config.getBoolean("default.enabled")) {
             int viewDistance = config.getInt("default.view-distance");
             if (viewDistance < 1)
-                ClearFog.getInstance().getLogger().warning("The view distance set in the config is invalid. It has to be between 2 and 32.");
+                ClearFog.getInstance().getLogger().warning("The view distance set in the config is invalid. It has to be above or equal to 1.");
+        }
+        if (config.getBoolean("world.enabled")) {
+            config.getConfigurationSection("world.worlds").getKeys(false).forEach(world -> {
+                int viewDistance = config.getInt("world.worlds." + world);
+                if (viewDistance < 1) {
+                    ClearFog.getInstance().getLogger().warning("The world view distance for \"" + world +
+                                                               "\" set in the config is invalid. It has to be above or equal to 1.");
+                }
+            });
         }
         if (config.getBoolean("individual.enabled")) {
             config.getConfigurationSection("individual.players").getKeys(false).forEach(uuid -> {
                 int viewDistance = config.getInt("individual.players." + uuid);
-                if (viewDistance < 1)
-                    ClearFog.getInstance().getLogger().warning("The individual view distance for " + uuid +
-                                                               " set in the config is invalid. It has to be between 2 and 32.");
+                if (viewDistance < 1) {
+                    ClearFog.getInstance().getLogger().warning("The individual view distance for \"" + uuid +
+                                                               "\" set in the config is invalid. It has to be above or equal to 1.");
+                }
             });
         }
     }
 
     private static int getViewDistance(UUID uuid) {
-        if (uuid != null && config.getBoolean("individual.enabled") && config.isSet("individual.players." + uuid))
-            return config.getInt("individual.players." + uuid);
+        if (uuid != null) {
+            if (config.getBoolean("individual.enabled") && config.isSet("individual.players." + uuid))
+                return config.getInt("individual.players." + uuid);
+
+            Player player = Bukkit.getPlayer(uuid);
+            String world;
+            if (player != null && config.getBoolean("world.enabled") &&
+                config.isSet("world.worlds." + (world = player.getWorld().getName()))) {
+                return config.getInt("world.worlds." + world);
+            }
+        }
+
         if (config.getBoolean("default.enabled"))
             return config.getInt("default.view-distance");
         return -1;
@@ -51,16 +71,16 @@ public class Util {
         updateViewDistances(Bukkit.getOnlinePlayers());
     }
 
-    private static void updateViewDistances(Collection<? extends Player> players) {
-        if(!config.getBoolean("direct-view-distance-updates"))
+    public static void updateViewDistances(Collection<? extends Player> players) {
+        if (!config.getBoolean("direct-view-distance-updates"))
             return;
 
         for (Player player : players) {
             int viewDistance = getViewDistance(player.getUniqueId());
             if (viewDistance == -1)
-                viewDistance = Math.min(32, Math.max(3, Bukkit.getViewDistance()));
+                viewDistance = player.getWorld().getViewDistance();
 
-            if(lastViewDistances.get(player.getUniqueId()) != viewDistance)
+            if (lastViewDistances.get(player.getUniqueId()) != viewDistance)
                 WRAPPER.updateViewDistance(player, viewDistance);
         }
     }
@@ -86,11 +106,14 @@ public class Util {
 
                                     if (clazz == WRAPPER.getLoginPlayPacketClass() ||
                                         clazz == WRAPPER.getUpdateViewDistanceClass()) {
-                                        lastViewDistances.put(player, WRAPPER.getViewDistanceFromPacket(msg));
+                                        ClearFog.getInstance().getLogger().info(String.valueOf(WRAPPER.getViewDistanceFromPacket(msg)));
 
                                         int viewDistance = getViewDistance(player);
                                         if (viewDistance != -1)
                                             msg = WRAPPER.replaceViewDistance(msg, checkViewDistance(viewDistance));
+                                        lastViewDistances.put(player, WRAPPER.getViewDistanceFromPacket(msg));
+                                        ClearFog.getInstance().getLogger().info(String.valueOf(WRAPPER.getViewDistanceFromPacket(msg)));
+                                        ClearFog.getInstance().getLogger().info("");
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();

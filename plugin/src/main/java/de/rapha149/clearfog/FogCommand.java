@@ -3,6 +3,7 @@ package de.rapha149.clearfog;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
@@ -28,10 +29,15 @@ public class FogCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(getMessage("no_permission"));
             return true;
         }
+
+        boolean worldfog = alias.equals("worldfog");
+        if (worldfog)
+            args = (String[]) ArrayUtils.addAll(new String[]{"world"}, args);
         boolean myfog = alias.equals("myfog");
         if (myfog)
             args = (String[]) ArrayUtils.addAll(new String[]{"individual"}, args);
-        if (args.length < 1 || !args[0].toLowerCase().matches("reload|directupdates|default|individual")) {
+
+        if (args.length < 1 || !args[0].toLowerCase().matches("reload|directupdates|default|world|individual")) {
             sender.sendMessage(getMessage("syntax").replace("%syntax%", alias + " <reload|directupdates|default|individual>"));
             return true;
         }
@@ -184,6 +190,158 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                                     .replace("%distance%", String.valueOf(viewDistance)));
 
                             updateViewDistances();
+                        }
+                        break;
+                }
+                break;
+            }
+            case "world": {
+                if (!sender.hasPermission("clearfog.world")) {
+                    sender.sendMessage(getMessage("no_permission"));
+                    break;
+                }
+
+                String syntaxPrefix = alias + (!worldfog ? " world " : " ");
+                if (args.length < 2 || !args[1].toLowerCase().matches("status|enable|disable|list|get|set|unset")) {
+                    sender.sendMessage(getMessage("syntax").replace("%syntax%",
+                            syntaxPrefix + "<status|enable|disable|list|get|set|unset>"));
+                    break;
+                }
+
+                String arg = args[1].toLowerCase();
+                switch (arg) {
+                    case "status":
+                        if (!sender.hasPermission("clearfog.world.status")) {
+                            sender.sendMessage(getMessage("no_permission"));
+                            break;
+                        }
+
+                        boolean enabled = config.getBoolean("world.enabled");
+                        sender.sendMessage(getMessage("world.status." + (enabled ? "enabled" : "disabled")));
+                        break;
+                    case "enable":
+                    case "disable": {
+                        if (!sender.hasPermission("clearfog.world.status")) {
+                            sender.sendMessage(getMessage("no_permission"));
+                            break;
+                        }
+
+                        boolean enable = arg.equals("enable");
+                        String messagePrefix = "world." + arg + ".";
+                        if (config.getBoolean("world.enabled") == enable) {
+                            sender.sendMessage(getMessage(messagePrefix + "as_before"));
+                            break;
+                        }
+
+                        config.set("world.enabled", enable);
+                        plugin.saveConfig();
+                        sender.sendMessage(getMessage(messagePrefix + "success"));
+
+                        updateViewDistances();
+                        break;
+                    }
+                    case "list":
+                        if (!config.getBoolean("world.enabled")) {
+                            sender.sendMessage(getMessage("world.feature_not_enabled"));
+                            break;
+                        }
+
+                        if (!sender.hasPermission("clearfog.world.list")) {
+                            sender.sendMessage(getMessage("no_permission"));
+                            break;
+                        }
+
+                        Set<String> worlds = config.getConfigurationSection("world.worlds").getKeys(false);
+                        if (worlds.isEmpty()) {
+                            sender.sendMessage(getMessage("world.list.nothing"));
+                            break;
+                        }
+
+                        sender.sendMessage(getMessage("world.list.prefix"));
+                        String part = getMessage("world.list.part");
+                        worlds.forEach(world -> sender.sendMessage(part.replace("%world%", world)
+                                .replace("%distance%", String.valueOf(config.getInt("world.worlds." + world)))));
+                        break;
+                    case "get":
+                    case "set":
+                    case "unset":
+                        if (!config.getBoolean("world.enabled")) {
+                            sender.sendMessage(getMessage("world.feature_not_enabled"));
+                            break;
+                        }
+
+                        if (!sender.hasPermission("clearfog.world.values")) {
+                            sender.sendMessage(getMessage("no_permission"));
+                            break;
+                        }
+
+                        boolean set = arg.equals("set");
+                        String target;
+                        if (args.length >= (set ? 4 : 3)) {
+                            target = args[set ? 3 : 2];
+                            if (Bukkit.getWorld(target) == null) {
+                                sender.sendMessage(getMessage("world.not_found").replace("%world%", target));
+                                break;
+                            }
+                        } else if (sender instanceof Player) {
+                            target = ((Player) sender).getWorld().getName();
+                        } else {
+                            sender.sendMessage(getMessage("syntax").replace("%syntax%",
+                                    syntaxPrefix + arg + (set ? " <View Distance>" : "") + " <World>"));
+                            break;
+                        }
+
+                        String key = "world.worlds." + target;
+                        String messagePrefix = "world." + arg + ".";
+                        if (arg.equals("get")) {
+                            if (config.isSet(key)) {
+                                sender.sendMessage(getMessage(messagePrefix + "return")
+                                        .replace("%distance%", String.valueOf(checkViewDistance(config.getInt(key))))
+                                        .replace("%world%", target));
+                            } else
+                                sender.sendMessage(getMessage(messagePrefix + "not_set").replace("%world%", target));
+                        } else if (set) {
+                            if (args.length >= 3) {
+                                int viewDistance;
+                                try {
+                                    viewDistance = Integer.parseInt(args[2]);
+                                } catch (NumberFormatException e) {
+                                    sender.sendMessage(getMessage("state_number"));
+                                    break;
+                                }
+
+                                if (viewDistance < 1) {
+                                    sender.sendMessage(getMessage("out_of_bounds"));
+                                    break;
+                                }
+                                if (config.getInt(key) == viewDistance) {
+                                    sender.sendMessage(getMessage(messagePrefix + "as_before")
+                                            .replace("%distance%", String.valueOf(viewDistance))
+                                            .replace("%world%", target));
+                                    break;
+                                }
+
+                                config.set(key, viewDistance);
+                                plugin.saveConfig();
+                                sender.sendMessage(getMessage(messagePrefix + "success")
+                                        .replace("%distance%", String.valueOf(viewDistance))
+                                        .replace("%world%", target));
+
+                                Util.updateViewDistances(Bukkit.getWorld(target).getPlayers());
+                            } else
+                                sender.sendMessage(getMessage("syntax").replace("%syntax%",
+                                        syntaxPrefix + "set <View Distance> [World]"));
+                        } else {
+                            if (!config.isSet(key)) {
+                                sender.sendMessage(getMessage(messagePrefix + "does_not_exist").replace("%world%", target));
+                                break;
+                            }
+
+                            config.set(key, null);
+                            plugin.saveConfig();
+                            sender.sendMessage(getMessage(messagePrefix + "success").replace("%world%", target));
+
+                            Util.updateViewDistances(Bukkit.getWorld(target).getPlayers());
                         }
                         break;
                 }
@@ -356,6 +514,8 @@ public class FogCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (alias.equals("worldfog"))
+            args = (String[]) ArrayUtils.addAll(new String[]{"world"}, args);
         if (alias.equals("myfog"))
             args = (String[]) ArrayUtils.addAll(new String[]{"individual"}, args);
 
@@ -367,6 +527,8 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                 list.add("reload");
             if (sender.hasPermission("clearfog.default"))
                 list.add("default");
+            if (sender.hasPermission("clearfog.world"))
+                list.add("world");
             if (sender.hasPermission("clearfog.individual"))
                 list.add("individual");
         }
@@ -381,6 +543,14 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                 if (sender.hasPermission("clearfog.default.values"))
                     list.addAll(Arrays.asList("get", "set"));
             }
+            if (args[0].equalsIgnoreCase("world")) {
+                if (sender.hasPermission("clearfog.world.status"))
+                    list.addAll(Arrays.asList("status", "enable", "disable"));
+                if (sender.hasPermission("clearfog.world.list"))
+                    list.add("list");
+                if (sender.hasPermission("clearfog.world.values"))
+                    list.addAll(Arrays.asList("get", "set", "unset"));
+            }
             if (args[0].equalsIgnoreCase("individual")) {
                 if (sender.hasPermission("clearfog.individual.status"))
                     list.addAll(Arrays.asList("status", "enable", "disable"));
@@ -389,6 +559,10 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                 if (sender.hasPermission("clearfog.individual.values"))
                     list.addAll(Arrays.asList("get", "set", "unset"));
             }
+        }
+        if (args[0].equalsIgnoreCase("world") && sender.hasPermission("clearfog.world.values") &&
+            args.length == (args[1].equalsIgnoreCase("set") ? 4 : 3)) {
+            Bukkit.getWorlds().stream().map(World::getName).forEach(list::add);
         }
         if (args[0].equalsIgnoreCase("individual") && sender.hasPermission("clearfog.individual.values.others") &&
             args.length == (args[1].equalsIgnoreCase("set") ? 4 : 3)) {
