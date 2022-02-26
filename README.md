@@ -37,6 +37,9 @@ default:
 individual:
   enabled: false
   players: {}
+world:
+  enabled: false
+  worlds: {}
 ```
 You can change all values using commands, but you can edit the config, too.  
 Here's what the values do:
@@ -49,6 +52,9 @@ Here's what the values do:
 - `distances`  
   - `enabled` - Changes whether player specific view distances are applied.
   - `players` - Here are player specific view distances saved.
+- `world`
+  - `enabled` - Changes whether world specific view distances are applied.
+  - `worlds` - Here are world specific view distances saved.
 
 ### Messages
 
@@ -65,6 +71,12 @@ Sub commands are:
 - `/fog default <enable/disable>` - Enables or disables the default view distance.
 - `/fog default get` - Returns the default view distance.
 - `/fog default set <View Distance>` - Sets the default view distance.
+- `/fog world status` - Checks whether world specific view distances are enabled.
+- `/fog world <enable|disable>` - Enables or disables world specific view distances.
+- `/fog world list` - Lists world specific view distances.
+- `/fog world get [World]` - Returns the world specific view distance for a specific world or the world where you are currently in.
+- `/fog world set <View Distance> [World]` - Sets the world specific view distance for a specific world or the world where you are currently in.
+- `/fog world unset [World]` - Removes the world specific view distance for a specific world or the world where you are currently in.
 - `/fog individual status` - Checks whether player specific view distances are enabled.
 - `/fog individual <enable|disable>` - Enables or disables player specific view distances.
 - `/fog individual list` - Lists player specific view distances.
@@ -72,10 +84,10 @@ Sub commands are:
 - `/fog individual set <View Distance> [Player]` - Sets the player specific view distance for yourself or another player.
 - `/fog individual unset [Player]` - Removes the player specific view distance for yourself or another player.
 
-You can also use the alias `/myfog` for all `/fog individual` commmands.  
+You can also use the alias `/worldfog` for all `/fog world` commands and the alias `/myfog` for all `/fog individual` commmands.  
 For example: You can use `/myfog set 16` instead of `/fog individual set 16`.
 
-Please also note that fog is only applied on join, so you have to rejoin for the changes to take effect.
+Please also note that if direct updates are distabled, fog is only applied on join, so you have to rejoin for the changes to take effect.
 
 ## Permissions
 
@@ -83,6 +95,9 @@ Please also note that fog is only applied on join, so you have to rejoin for the
 - `clearfog.directupdates` - Permission for `/fog directupdates`
 - `clearfog.default.status` - Permission for `/fog default status` and `/fog default <enable|disable>`
 - `clearfog.default.values` - Permission for `/fog default get` and `/fog default set`
+- `clearfog.world.status` - Permission for `/fog world status` and `/fog world <enable|disable>`
+- `clearfog.world.list` - Permission for `/fog world list`
+- `clearfog.world.values` - Permission for `/fog world get`, `/fog world set` and `/fog world unset`
 - `clearfog.individual.status` - Permission for `/fog individual status` and `/fog individual <enable|disable>`
 - `clearfog.individual.list` - Permission for `/fog individual list`
 - `clearfog.individual.values` - Permission for `/fog individual get`, `/fog individual set` and `/fog individual unset`
