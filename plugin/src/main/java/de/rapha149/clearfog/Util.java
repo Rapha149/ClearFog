@@ -106,14 +106,10 @@ public class Util {
 
                                     if (clazz == WRAPPER.getLoginPlayPacketClass() ||
                                         clazz == WRAPPER.getUpdateViewDistanceClass()) {
-                                        ClearFog.getInstance().getLogger().info(String.valueOf(WRAPPER.getViewDistanceFromPacket(msg)));
-
                                         int viewDistance = getViewDistance(player);
                                         if (viewDistance != -1)
                                             msg = WRAPPER.replaceViewDistance(msg, checkViewDistance(viewDistance));
                                         lastViewDistances.put(player, WRAPPER.getViewDistanceFromPacket(msg));
-                                        ClearFog.getInstance().getLogger().info(String.valueOf(WRAPPER.getViewDistanceFromPacket(msg)));
-                                        ClearFog.getInstance().getLogger().info("");
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
