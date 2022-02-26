@@ -37,6 +37,9 @@ default:
 individual:
   enabled: false
   players: {}
+world:
+  enabled: false
+  worlds: {}
 ```
 You can change all values using commands, but you can edit the config, too.  
 Here's what the values do:
@@ -49,6 +52,9 @@ Here's what the values do:
 - `distances`  
   - `enabled` - Changes whether player specific view distances are applied.
   - `players` - Here are player specific view distances saved.
+- `world`
+  - `enabled` - Changes whether world specific view distances are applied.
+  - `worlds` - Here are world specific view distances saved.
 
 ### Messages
 
