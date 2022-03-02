@@ -83,6 +83,7 @@ public final class ClearFog extends JavaPlugin {
         }
 
         new FogCommand(getCommand("fog"));
+        getServer().getPluginManager().registerEvents(new Events(), this);
         getLogger().info(getMessage("plugin.enable"));
     }
 

@@ -45,7 +45,7 @@ public class Util {
         }
     }
 
-    private static int getViewDistance(UUID uuid) {
+    public static int getViewDistance(UUID uuid) {
         if (uuid != null) {
             if (config.getBoolean("individual.enabled") && config.isSet("individual.players." + uuid))
                 return config.getInt("individual.players." + uuid);
@@ -64,15 +64,23 @@ public class Util {
     }
 
     public static void updateViewDistance(Player player) {
-        updateViewDistances(Arrays.asList(player));
+        updateViewDistance(player, false);
+    }
+
+    public static void updateViewDistance(Player player, boolean force) {
+        updateViewDistances(Arrays.asList(player), force);
     }
 
     public static void updateViewDistances() {
-        updateViewDistances(Bukkit.getOnlinePlayers());
+        updateViewDistances(Bukkit.getOnlinePlayers(), false);
     }
 
     public static void updateViewDistances(Collection<? extends Player> players) {
-        if (!config.getBoolean("direct-view-distance-updates"))
+        updateViewDistances(players, false);
+    }
+
+    public static void updateViewDistances(Collection<? extends Player> players, boolean force) {
+        if(!force && !config.getBoolean("direct-view-distance-updates"))
             return;
 
         for (Player player : players) {
@@ -106,10 +114,12 @@ public class Util {
 
                                     if (clazz == WRAPPER.getLoginPlayPacketClass() ||
                                         clazz == WRAPPER.getUpdateViewDistanceClass()) {
+                                        ClearFog.getInstance().getLogger().info(String.valueOf(WRAPPER.getViewDistanceFromPacket(msg)));
                                         int viewDistance = getViewDistance(player);
                                         if (viewDistance != -1)
                                             msg = WRAPPER.replaceViewDistance(msg, checkViewDistance(viewDistance));
                                         lastViewDistances.put(player, WRAPPER.getViewDistanceFromPacket(msg));
+                                        ClearFog.getInstance().getLogger().info(String.valueOf(WRAPPER.getViewDistanceFromPacket(msg)));
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();

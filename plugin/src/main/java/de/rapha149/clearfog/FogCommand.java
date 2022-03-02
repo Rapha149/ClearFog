@@ -560,13 +560,16 @@ public class FogCommand implements CommandExecutor, TabCompleter {
                     list.addAll(Arrays.asList("get", "set", "unset"));
             }
         }
-        if (args[0].equalsIgnoreCase("world") && sender.hasPermission("clearfog.world.values") &&
-            args.length == (args[1].equalsIgnoreCase("set") ? 4 : 3)) {
-            Bukkit.getWorlds().stream().map(World::getName).forEach(list::add);
-        }
-        if (args[0].equalsIgnoreCase("individual") && sender.hasPermission("clearfog.individual.values.others") &&
-            args.length == (args[1].equalsIgnoreCase("set") ? 4 : 3)) {
-            Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).forEach(list::add);
+        if (args.length >= 3) {
+            int length = args[1].equalsIgnoreCase("set") ? 4 : 3;
+            if (args.length == length && args[0].equalsIgnoreCase("world") &&
+                sender.hasPermission("clearfog.world.values")) {
+                Bukkit.getWorlds().stream().map(World::getName).forEach(list::add);
+            }
+            if (args.length == length && args[0].equalsIgnoreCase("individual") &&
+                sender.hasPermission("clearfog.individual.values.others")) {
+                Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).forEach(list::add);
+            }
         }
 
         String arg = args[args.length - 1].toLowerCase();
