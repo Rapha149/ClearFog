@@ -26,7 +26,7 @@ If applicable, add screenshots to help explain your problem.
 **Desktop (please complete the following information):**
  - Server software: [e.g. Spigot, Paper]
  - Server version: [e.g. 1.18, 1.18.1]
- - Plugin version: [e.g. 1.5.3]
+ - Plugin version: [e.g. 1.5.4]
 
 **Smartphone (please complete the following information):**
  - Device: [e.g. iPhone6]

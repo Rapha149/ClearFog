@@ -1,6 +1,6 @@
 name: ClearFog
 author: Rapha149
-version: 1.5.3
+version: 1.5.4
 main: de.rapha149.clearfog.ClearFog
 api-version: 1.18
 description: Disables fog by "telling" the client that the view distance is higher.
