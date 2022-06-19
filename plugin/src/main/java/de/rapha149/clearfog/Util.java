@@ -80,16 +80,17 @@ public class Util {
     }
 
     public static void updateViewDistances(Collection<? extends Player> players, boolean force) {
-        if(!force && !config.getBoolean("direct-view-distance-updates"))
+        if (!force && !config.getBoolean("direct-view-distance-updates"))
             return;
 
         for (Player player : players) {
-            int viewDistance = getViewDistance(player.getUniqueId());
+            UUID uuid = player.getUniqueId();
+            int viewDistance = getViewDistance(uuid);
             if (viewDistance == -1)
                 viewDistance = player.getWorld().getViewDistance();
 
-            if (lastViewDistances.get(player.getUniqueId()) != viewDistance)
-                WRAPPER.updateViewDistance(player, viewDistance);
+            if (!lastViewDistances.containsKey(uuid) || lastViewDistances.get(uuid) != viewDistance)
+                WRAPPER.updateViewDistance(player, checkViewDistance(viewDistance));
         }
     }
 
@@ -112,8 +113,8 @@ public class Util {
                                     if (clazz == WRAPPER.getLoginSuccessPacketClass())
                                         player = WRAPPER.getUUIDFromLoginPacket(msg);
 
-                                    if (clazz == WRAPPER.getLoginPlayPacketClass() ||
-                                        clazz == WRAPPER.getUpdateViewDistanceClass()) {
+                                    if (player != null && (clazz == WRAPPER.getLoginPlayPacketClass() ||
+                                                           clazz == WRAPPER.getUpdateViewDistanceClass())) {
                                         int viewDistance = getViewDistance(player);
                                         if (viewDistance != -1)
                                             msg = WRAPPER.replaceViewDistance(msg, checkViewDistance(viewDistance));
