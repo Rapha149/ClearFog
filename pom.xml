@@ -6,7 +6,7 @@
 
     <groupId>de.rapha149.clearfog</groupId>
     <artifactId>ClearFog-parent</artifactId>
-    <version>1.5.5</version>
+    <version>1.5.6</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -15,6 +15,7 @@
         <module>1_18_R1</module>
         <module>1_18_R2</module>
         <module>1_19_R1</module>
+        <module>1_19_R2</module>
     </modules>
 
     <properties>
