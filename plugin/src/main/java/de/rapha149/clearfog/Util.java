@@ -64,23 +64,23 @@ public class Util {
     }
 
     public static void updateViewDistance(Player player) {
-        updateViewDistance(player, false);
+        updateViewDistance(player, true);
     }
 
-    public static void updateViewDistance(Player player, boolean force) {
-        updateViewDistances(Arrays.asList(player), force);
+    public static void updateViewDistance(Player player, boolean directUpdate) {
+        updateViewDistances(Arrays.asList(player), directUpdate);
     }
 
     public static void updateViewDistances() {
-        updateViewDistances(Bukkit.getOnlinePlayers(), false);
+        updateViewDistances(Bukkit.getOnlinePlayers(), true);
     }
 
     public static void updateViewDistances(Collection<? extends Player> players) {
-        updateViewDistances(players, false);
+        updateViewDistances(players, true);
     }
 
-    public static void updateViewDistances(Collection<? extends Player> players, boolean force) {
-        if (!force && !config.getBoolean("direct-view-distance-updates"))
+    public static void updateViewDistances(Collection<? extends Player> players, boolean directUpdate) {
+        if (directUpdate && !config.getBoolean("direct-view-distance-updates"))
             return;
 
         for (Player player : players) {
@@ -90,7 +90,7 @@ public class Util {
                 viewDistance = player.getWorld().getViewDistance();
 
             if (!lastViewDistances.containsKey(uuid) || lastViewDistances.get(uuid) != viewDistance)
-                WRAPPER.updateViewDistance(player, checkViewDistance(viewDistance));
+                WRAPPER.updateViewDistance(player, checkViewDistance(viewDistance), directUpdate);
         }
     }
 

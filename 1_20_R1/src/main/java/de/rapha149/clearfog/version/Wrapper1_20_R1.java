@@ -62,7 +62,7 @@ public class Wrapper1_20_R1 implements VersionWrapper {
             return packet.a();
         else {
             throw new IllegalArgumentException("Parameter \"obj\" not instance of class " + PacketPlayOutLogin.class.getName() +
-                                               " nor instance of class " + PacketPlayOutViewDistance.class.getName());
+                    " nor instance of class " + PacketPlayOutViewDistance.class.getName());
         }
     }
 
@@ -76,22 +76,24 @@ public class Wrapper1_20_R1 implements VersionWrapper {
             return new PacketPlayOutViewDistance(viewDistance);
         } else {
             throw new IllegalArgumentException("Parameter \"obj\" not instance of class " + PacketPlayOutLogin.class.getName() +
-                                               " nor instance of class " + PacketPlayOutViewDistance.class.getName());
+                    " nor instance of class " + PacketPlayOutViewDistance.class.getName());
         }
     }
 
     @Override
-    public void updateViewDistance(Player player, int viewDistance) {
+    public void updateViewDistance(Player player, int viewDistance, boolean directUpdate) {
         EntityPlayer p = ((CraftPlayer) player).getHandle();
         p.c.a(new PacketPlayOutViewDistance(viewDistance));
 
-        PlayerChunkMap map = p.x().k().a;
-        Location loc = player.getLocation();
-        double x = loc.getX(), y = loc.getY(), z = loc.getZ();
+        if (directUpdate) {
+            PlayerChunkMap map = p.x().k().a;
+            Location loc = player.getLocation();
+            double x = loc.getX(), y = loc.getY(), z = loc.getZ();
 
-        p.o(x + 1000, y, z + 1000);
-        map.a(p);
-        p.o(x, y, z);
-        map.a(p);
+            p.o(x + 1000, y, z + 1000);
+            map.a(p);
+            p.o(x, y, z);
+            map.a(p);
+        }
     }
 }

@@ -10,11 +10,11 @@ public class Events implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTask(ClearFog.getInstance(), () -> Util.updateViewDistance(event.getPlayer(), true));
+        Bukkit.getScheduler().runTask(ClearFog.getInstance(), () -> Util.updateViewDistance(event.getPlayer(), false));
     }
 
     @EventHandler
     public void onWorldChanged(PlayerChangedWorldEvent event) {
-        Util.updateViewDistance(event.getPlayer(), true);
+        Util.updateViewDistance(event.getPlayer(), false);
     }
 }

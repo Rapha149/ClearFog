@@ -22,5 +22,5 @@ public interface VersionWrapper {
 
     Object replaceViewDistance(Object obj, int viewDistance);
 
-    void updateViewDistance(Player player, int viewDistance);
+    void updateViewDistance(Player player, int viewDistance, boolean directUpdate);
 }
