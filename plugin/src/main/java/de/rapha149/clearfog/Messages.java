@@ -34,7 +34,7 @@ public class Messages {
         messageConfig.addDefault("directupdates.enable.as_before", "%prefix%&6Direct updates are already enabled.");
         messageConfig.addDefault("directupdates.enable.success", "%prefix%&7Direct updates are now &aenabled." +
                                                                  "\\n&6Direct updates will update the view distance directly when it was changed. " +
-                                                                 "This is &lnot &6recommeded as it does not look very good.");
+                                                                 "This is &lnot &6recommeded as it does not look very good and could cause bugs.");
         messageConfig.addDefault("directupdates.disable.as_before", "%prefix%&6Direct updates are already disabled.");
         messageConfig.addDefault("directupdates.disable.success", "%prefix%&7Direct updates are now &cdisabled.");
         messageConfig.addDefault("default.status.enabled", "%prefix%&7Default view distance is currently &aenabled&7.");
