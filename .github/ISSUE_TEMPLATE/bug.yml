@@ -18,7 +18,7 @@ body:
   attributes:
     label: Server software and version
     description: e.g. Spigot, Paper, Mohist, ...
-    placeholder: Spigot 1.16.5
+    placeholder: Spigot 1.18.2
   validations:
     required: true
 - type: textarea
