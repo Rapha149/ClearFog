@@ -26,13 +26,13 @@ public final class ClearFog extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        String nmsVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].substring(1);
+        String nmsVersion = getNMSVersion();
         try {
             WRAPPER = (VersionWrapper) Class.forName(VersionWrapper.class.getPackage().getName() + ".Wrapper" + nmsVersion).newInstance();
-        } catch (IllegalAccessException | InstantiationException exception) {
-            throw new IllegalStateException("Failed to load support for server version " + nmsVersion, exception);
-        } catch (ClassNotFoundException exception) {
-            throw new IllegalStateException("ClearFog does not support the server version \"" + nmsVersion + "\"", exception);
+        } catch (IllegalAccessException | InstantiationException e) {
+            throw new IllegalStateException("Failed to load support for server version \"" + nmsVersion + "\"", e);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException("ClearFog does not support the server version \"" + nmsVersion + "\"", e);
         }
 
         loadMessages();
@@ -99,6 +99,26 @@ public final class ClearFog extends JavaPlugin {
             e.printStackTrace();
         }
         getLogger().info(getMessage("plugin.disable"));
+    }
+
+    private String getNMSVersion() {
+        String craftBukkitPackage = Bukkit.getServer().getClass().getPackage().getName();
+
+        String version;
+        if (!craftBukkitPackage.contains(".v")) { // cb package not relocated (i.e. paper 1.20.5+)
+            // separating major and minor versions, example: 1.20.4-R0.1-SNAPSHOT -> major = 20, minor = 4
+            final String[] versionNumbers = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
+            int major = Integer.parseInt(versionNumbers[1]);
+            int minor = Integer.parseInt(versionNumbers[2]);
+
+            if (major == 20 && (minor == 5 || minor == 6))
+                version = "1_20_R4";
+            else
+                throw new IllegalStateException("ClearFog does not support bukkit server version \"" + Bukkit.getBukkitVersion() + "\"");
+        } else {
+            version = craftBukkitPackage.split("\\.")[3].substring(1);
+        }
+        return version;
     }
 
     void loadConfig() {

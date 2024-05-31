@@ -11,7 +11,7 @@ body:
 - type: input
   attributes:
     label: Plugin version
-    placeholder: 1.6.2
+    placeholder: 1.6.3
   validations:
     required: true
 - type: input
