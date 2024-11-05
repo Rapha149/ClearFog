@@ -7,7 +7,7 @@
     <parent>
         <artifactId>ClearFog-parent</artifactId>
         <groupId>de.rapha149.clearfog</groupId>
-        <version>1.6.4</version>
+        <version>1.6.5</version>
     </parent>
 
     <artifactId>ClearFog</artifactId>
@@ -87,6 +87,12 @@
         <dependency>
             <groupId>de.rapha149.clearfog</groupId>
             <artifactId>ClearFog-1_21_R1</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.rapha149.clearfog</groupId>
+            <artifactId>ClearFog-1_21_R2</artifactId>
             <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>

@@ -138,8 +138,10 @@ public final class ClearFog extends JavaPlugin {
 
         if (major == 20 && minor >= 5) { // 1.20.5, 1.20.6
             return "1_20_R4";
-        } else if (major == 21 && minor == 0) { // 1.21
+        } else if (major == 21 && minor <= 1) { // 1.21, 1.21.1
             return "1_21_R1";
+        } else if (major == 21 && (minor == 2 || minor == 3)) { // 1.21.2, 1.21.3
+            return "1_21_R2";
         }
 
         throw new IllegalStateException("ClearFog does not support bukkit server version \"" + bukkitVersion + "\"");
