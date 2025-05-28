@@ -6,18 +6,12 @@ import de.rapha149.clearfog.Metrics.SingleLineChart;
 import de.rapha149.clearfog.version.VersionWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static de.rapha149.clearfog.Messages.getMessage;
 import static de.rapha149.clearfog.Messages.loadMessages;
@@ -26,13 +20,25 @@ import static de.rapha149.clearfog.Util.config;
 
 public final class ClearFog extends JavaPlugin {
 
+    private static final Map<String, String> VERSIONS = Map.of(
+            "1.20.5", "1_20_R4",
+            "1.20.6", "1_20_R4",
+            "1.21.1", "1_21_R1",
+            "1.21.3", "1_21_R2",
+            "1.21.4", "1_21_R3",
+            "1.21.5", "1_21_R4"
+    );
+    private static final String NEWEST_VERSION = "1_21_R4";
+
     private static ClearFog instance;
 
     @Override
     public void onEnable() {
         instance = this;
 
-        String nmsVersion = getNMSVersion();
+        String craftBukkitPackage = Bukkit.getServer().getClass().getPackage().getName();
+        String nmsVersion = craftBukkitPackage.contains(".v") ? craftBukkitPackage.split("\\.")[3].substring(1) :
+                VERSIONS.getOrDefault(Bukkit.getBukkitVersion().split("-")[0], NEWEST_VERSION);
         try {
             WRAPPER = (VersionWrapper) Class.forName(VersionWrapper.class.getPackage().getName() + ".Wrapper" + nmsVersion).newInstance();
         } catch (IllegalAccessException | InstantiationException e) {
@@ -69,15 +75,17 @@ public final class ClearFog extends JavaPlugin {
         }));
 
         if (config.getBoolean("check-for-updates")) {
-            String version = Updates.getAvailableVersion(true);
-            if (version == null)
-                getLogger().info(getMessage("plugin.up_to_date"));
-            else {
-                for (String line : getMessage("plugin.outdated").replace("%version%", version)
-                        .replace("%url%", Updates.SPIGOT_URL).split("\n")) {
-                    getLogger().warning(line);
+            Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+                String version = Updates.getAvailableVersion(true);
+                if (version == null)
+                    getLogger().info(getMessage("plugin.up_to_date"));
+                else {
+                    for (String line : getMessage("plugin.outdated").replace("%version%", version)
+                            .replace("%url%", Updates.SPIGOT_URL).split("\n")) {
+                        getLogger().warning(line);
+                    }
                 }
-            }
+            });
         }
 
         try {
@@ -105,46 +113,6 @@ public final class ClearFog extends JavaPlugin {
             e.printStackTrace();
         }
         getLogger().info(getMessage("plugin.disable"));
-    }
-
-    private String getNMSVersion() {
-        String craftBukkitPackage = Bukkit.getServer().getClass().getPackage().getName();
-        if (craftBukkitPackage.contains(".v"))
-            return craftBukkitPackage.split("\\.")[3].substring(1);
-
-        // Get NMS Version from the bukkit version
-        String bukkitVersion = Bukkit.getBukkitVersion();
-
-        // Try to get NMS Version from online list (https://github.com/Rapha149/NMSVersions)
-        try {
-            HttpURLConnection conn = (HttpURLConnection) new URL("https://raw.githubusercontent.com/Rapha149/NMSVersions/main/nms-versions.json").openConnection();
-            conn.setConnectTimeout(10000);
-            conn.setRequestMethod("GET");
-            conn.connect();
-
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
-                JSONObject json = new JSONObject(br.lines().collect(Collectors.joining()));
-                if (json.has(bukkitVersion))
-                    return json.getString(bukkitVersion);
-            }
-        } catch (IOException e) {
-            getLogger().warning("Can't access online NMS versions list, falling back to hardcoded NMS versions. These could be outdated.");
-        }
-
-        // separating major and minor versions, example: 1.20.4-R0.1-SNAPSHOT -> major = 20, minor = 4
-        final String[] versionNumbers = bukkitVersion.split("-")[0].split("\\.");
-        int major = Integer.parseInt(versionNumbers[1]);
-        int minor = Integer.parseInt(versionNumbers[2]);
-
-        if (major == 20 && minor >= 5) { // 1.20.5, 1.20.6
-            return "1_20_R4";
-        } else if (major == 21 && minor <= 1) { // 1.21, 1.21.1
-            return "1_21_R1";
-        } else if (major == 21 && (minor == 2 || minor == 3)) { // 1.21.2, 1.21.3
-            return "1_21_R2";
-        }
-
-        throw new IllegalStateException("ClearFog does not support bukkit server version \"" + bukkitVersion + "\"");
     }
 
     void loadConfig() {
