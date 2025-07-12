@@ -26,9 +26,11 @@ public final class ClearFog extends JavaPlugin {
             "1.21.1", "1_21_R1",
             "1.21.3", "1_21_R2",
             "1.21.4", "1_21_R3",
-            "1.21.5", "1_21_R4"
+            "1.21.5", "1_21_R4",
+            "1.21.6", "1_21_R5",
+            "1.21.7", "1_21_R5"
     );
-    private static final String NEWEST_VERSION = "1_21_R4";
+    private static final String NEWEST_VERSION = "1_21_R5";
 
     private static ClearFog instance;
 
